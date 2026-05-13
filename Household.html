@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="คลังบ้าน">
+<meta name="theme-color" content="#ffffff">
+<title>คลังของใช้ในบ้าน</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f5f5f4;
+    --bg3: #e8e7e3;
+    --text: #1a1a1a;
+    --text2: #6b6b6b;
+    --text3: #9b9b9b;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.22);
+    --radius: 10px;
+    --radius-lg: 14px;
+    --accent: #1a1a1a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --bg2: #2c2c2e;
+      --bg3: #3a3a3c;
+      --text: #f2f2f7;
+      --text2: #aeaeb2;
+      --text3: #636366;
+      --border: rgba(255,255,255,0.12);
+      --border2: rgba(255,255,255,0.22);
+      --accent: #f2f2f7;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    background: var(--bg3);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+  .top-bar {
+    background: var(--bg);
+    border-bottom: 0.5px solid var(--border);
+    padding: 16px 20px 12px;
+    padding-top: calc(16px + env(safe-area-inset-top, 0px));
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .top-bar h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+  .top-bar p { font-size: 13px; color: var(--text2); margin-top: 2px; }
+  .tabs {
+    display: flex;
+    background: var(--bg);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 20px;
+    gap: 0;
+    position: sticky;
+    top: calc(68px + env(safe-area-inset-top, 0px));
+    z-index: 99;
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--text2);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  .tab.active { color: var(--text); border-bottom-color: var(--text); }
+  .content { padding: 16px 16px 32px; max-width: 600px; margin: 0 auto; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .card {
+    background: var(--bg);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border: 0.5px solid var(--border);
+  }
+  .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+  .field label { font-size: 12px; color: var(--text2); font-weight: 500; }
+  .field input, .field select {
+    font-size: 16px;
+    padding: 9px 12px;
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    background: var(--bg2);
+    color: var(--text);
+    width: 100%;
+    -webkit-appearance: none;
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--text);
+  }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .row3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
+  .row4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: var(--radius);
+    border: 0.5px solid var(--border2);
+    background: var(--bg2);
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    -webkit-appearance: none;
+  }
+  .btn:active { opacity: 0.7; }
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+    width: 100%;
+    justify-content: center;
+  }
+  .btn-sm { padding: 6px 12px; font-size: 13px; }
+  .item-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .item-card {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    position: relative;
+  }
+  .item-card.low { border-color: #E24B4A; border-width: 1.5px; }
+  .item-icon { font-size: 28px; margin-bottom: 6px; }
+  .item-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; line-height: 1.3; }
+  .item-cat { font-size: 11px; color: var(--text2); margin-bottom: 10px; }
+  .qty-row { display: flex; align-items: center; justify-content: space-between; }
+  .qty-box { display: flex; align-items: center; gap: 8px; }
+  .qty-btn {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 0.5px solid var(--border2);
+    background: var(--bg2);
+    color: var(--text);
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    -webkit-appearance: none;
+  }
+  .qty-btn:active { opacity: 0.6; }
+  .qty-num { font-size: 17px; font-weight: 700; min-width: 22px; text-align: center; color: var(--text); }
+  .unit-tag { font-size: 11px; color: var(--text2); }
+  .del-btn {
+    position: absolute; top: 8px; right: 8px;
+    background: none; border: none;
+    color: var(--text3); font-size: 16px; cursor: pointer; padding: 4px;
+  }
+  .badge-low {
+    display: inline-block; margin-top: 7px;
+    font-size: 11px; padding: 2px 8px;
+    border-radius: 999px;
+    background: #FCEBEB; color: #A32D2D;
+    font-weight: 500;
+  }
+  .filter-row { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .pill {
+    padding: 6px 14px; border-radius: 999px;
+    font-size: 13px; cursor: pointer;
+    border: 0.5px solid var(--border2);
+    background: var(--bg); color: var(--text2);
+    white-space: nowrap; -webkit-appearance: none;
+  }
+  .pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
+  .stat { background: var(--bg2); border-radius: var(--radius); padding: 12px; }
+  .stat-lbl { font-size: 11px; color: var(--text2); margin-bottom: 4px; font-weight: 500; }
+  .stat-num { font-size: 22px; font-weight: 700; color: var(--text); }
+  .session-block {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .session-hdr {
+    display: flex; align-items: center; gap: 10px;
+    padding: 13px 16px; cursor: pointer;
+    background: var(--bg2);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .session-date { font-size: 15px; font-weight: 600; color: var(--text); }
+  .session-meta { font-size: 12px; color: var(--text2); margin-left: auto; display: flex; gap: 10px; align-items: center; }
+  .session-items { max-height: 0; overflow: hidden; transition: max-height 0.25s ease; }
+  .session-items.open { max-height: 800px; }
+  .log-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px;
+    border-top: 0.5px solid var(--border);
+  }
+  .log-icon { font-size: 20px; flex-shrink: 0; }
+  .log-name { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; }
+  .log-sub { font-size: 12px; color: var(--text2); }
+  .log-qty { font-size: 13px; color: var(--text2); white-space: nowrap; }
+  .log-price { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .warn-box {
+    background: #FAEEDA;
+    border-radius: var(--radius-lg);
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    border: 0.5px solid #EF9F27;
+  }
+  .warn-title { font-size: 13px; font-weight: 600; color: #633806; margin-bottom: 8px; }
+  .warn-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .warn-chip {
+    background: #fff; border: 0.5px solid #EF9F27;
+    border-radius: 999px; padding: 4px 10px;
+    font-size: 12px; color: #633806;
+  }
+  .nbuy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .nbuy-card {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nbuy-icon { font-size: 20px; }
+  .nbuy-name { font-size: 13px; color: var(--text); font-weight: 500; }
+  .nbuy-last { font-size: 11px; color: var(--text2); }
+  .empty { text-align: center; padding: 40px 0; color: var(--text2); font-size: 15px; line-height: 1.8; }
+  .sec-title { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .store-badge {
+    font-size: 11px; background: var(--bg3);
+    padding: 2px 8px; border-radius: 999px;
+    color: var(--text2);
+  }
+  .chevron { font-size: 14px; color: var(--text2); transition: transform 0.2s; }
+  .chevron.open { transform: rotate(180deg); }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>🏠 คลังของใช้ในบ้าน</h1>
+  <p>จัดการสินค้าและบันทึกการซื้อทุกครั้ง</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('inventory')">
+    <i class="ti ti-box"></i> คลัง
+  </button>
+  <button class="tab" onclick="switchTab('buy')">
+    <i class="ti ti-shopping-cart"></i> ซื้อ
+  </button>
+  <button class="tab" onclick="switchTab('history')">
+    <i class="ti ti-calendar"></i> ประวัติ
+  </button>
+</div>
+
+<div class="content">
+
+  <!-- TAB: คลังสินค้า -->
+  <div id="tab-inventory" class="section active">
+    <div class="card">
+      <div class="row3">
+        <div class="field"><label>ชื่อสินค้า</label><input type="text" id="new-name" placeholder="เช่น น้ำมันพืช"></div>
+        <div class="field"><label>หมวดหมู่</label>
+          <select id="new-cat">
+            <option>เครื่องปรุง</option><option>ของใช้</option><option>อาหารสด</option><option>ของแห้ง</option><option>ทำความสะอาด</option>
+          </select>
+        </div>
+        <div class="field"><label>หน่วย</label><input type="text" id="new-unit" placeholder="ขวด/ก้อน"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>จำนวนเริ่มต้น</label><input type="number" id="new-qty" placeholder="0" min="0" inputmode="numeric"></div>
+        <div class="field"><label>แจ้งเตือนเมื่อเหลือ</label><input type="number" id="new-min" placeholder="1" min="0" inputmode="numeric"></div>
+      </div>
+      <button class="btn btn-primary" onclick="addItem()"><i class="ti ti-plus"></i> เพิ่มสินค้า</button>
+    </div>
+
+    <div class="filter-row">
+      <button class="pill active" onclick="setFilter('all',this)">ทั้งหมด</button>
+      <button class="pill" onclick="setFilter('เครื่องปรุง',this)">เครื่องปรุง</button>
+      <button class="pill" onclick="setFilter('ของใช้',this)">ของใช้</button>
+      <button class="pill" onclick="setFilter('ของแห้ง',this)">ของแห้ง</button>
+      <button class="pill" onclick="setFilter('ทำความสะอาด',this)">ทำความสะอาด</button>
+      <button class="pill" onclick="setFilter('low',this)">⚠️ ใกล้หมด</button>
+    </div>
+    <div class="item-grid" id="item-grid"></div>
+  </div>
+
+  <!-- TAB: บันทึกการซื้อ -->
+  <div id="tab-buy" class="section">
+    <div class="stats-row">
+      <div class="stat"><div class="stat-lbl">รายการทั้งหมด</div><div class="stat-num" id="stat-items">0</div></div>
+      <div class="stat"><div class="stat-lbl">ค่าใช้จ่ายเดือนนี้</div><div class="stat-num" id="stat-month">฿0</div></div>
+      <div class="stat"><div class="stat-lbl">ใกล้หมด</div><div class="stat-num" id="stat-low">0</div></div>
+    </div>
+    <div class="card">
+      <div class="field"><label>สินค้า</label><select id="buy-item-sel"></select></div>
+      <div class="row2">
+        <div class="field"><label>จำนวนที่ซื้อ</label><input type="number" id="buy-qty" value="1" min="1" inputmode="numeric"></div>
+        <div class="field"><label>ราคา (฿)</label><input type="number" id="buy-price" placeholder="0" min="0" inputmode="decimal"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>วันที่ซื้อ</label><input type="date" id="buy-date"></div>
+        <div class="field"><label>สถานที่</label><input type="text" id="buy-store" placeholder="เช่น เทสโก้"></div>
+      </div>
+      <div class="field"><label>หมายเหตุ</label><input type="text" id="buy-note" placeholder="เพิ่มเติม..."></div>
+      <button class="btn btn-primary" id="buy-btn" onclick="recordBuy()"><i class="ti ti-shopping-cart"></i> บันทึกการซื้อ</button>
+    </div>
+  </div>
+
+  <!-- TAB: ประวัติ -->
+  <div id="tab-history" class="section">
+    <div id="history-view"></div>
+  </div>
+
+</div>
+
+<script>
+var ITEMS_KEY='hh3_items', LOGS_KEY='hh3_logs';
+var items=[], logs=[];
+try{items=JSON.parse(localStorage.getItem(ITEMS_KEY)||'[]');logs=JSON.parse(localStorage.getItem(LOGS_KEY)||'[]');}catch(e){}
+
+if(!items.length){
+  items=[
+    {id:1,name:'น้ำมันพืช',cat:'เครื่องปรุง',unit:'ขวด',qty:2,min:1},
+    {id:2,name:'ซีอิ้วขาว',cat:'เครื่องปรุง',unit:'ขวด',qty:1,min:1},
+    {id:3,name:'น้ำปลา',cat:'เครื่องปรุง',unit:'ขวด',qty:3,min:1},
+    {id:4,name:'น้ำตาล',cat:'เครื่องปรุง',unit:'กิโล',qty:1,min:1},
+    {id:5,name:'สบู่',cat:'ของใช้',unit:'ก้อน',qty:4,min:2},
+    {id:6,name:'แชมพู',cat:'ของใช้',unit:'ขวด',qty:1,min:1},
+    {id:7,name:'ผงซักฟอก',cat:'ทำความสะอาด',unit:'ถุง',qty:0,min:1},
+  ];
+  save();
+}
+
+var catEmoji={'เครื่องปรุง':'🧂','ของใช้':'🧴','อาหารสด':'🥦','ของแห้ง':'🥫','ทำความสะอาด':'🧹'};
+var currentFilter='all';
+
+function save(){try{localStorage.setItem(ITEMS_KEY,JSON.stringify(items));localStorage.setItem(LOGS_KEY,JSON.stringify(logs));}catch(e){}}
+
+function switchTab(t){
+  ['inventory','buy','history'].forEach(function(name,i){
+    document.querySelectorAll('.tab')[i].classList.toggle('active',name===t);
+    document.getElementById('tab-'+name).classList.toggle('active',name===t);
+  });
+  if(t==='buy'){updateBuySelect();updateStats();}
+  if(t==='history'){renderHistory();}
+}
+
+function setFilter(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.pill').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderItems();
+}
+
+function renderItems(){
+  var grid=document.getElementById('item-grid');
+  var filtered=items;
+  if(currentFilter==='low') filtered=items.filter(function(i){return i.qty<=i.min;});
+  else if(currentFilter!=='all') filtered=items.filter(function(i){return i.cat===currentFilter;});
+  if(!filtered.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1">ไม่พบสินค้า</div>';return;}
+  grid.innerHTML=filtered.map(function(item){
+    var low=item.qty<=item.min;
+    return '<div class="item-card'+(low?' low':'')+'">'+
+      '<button class="del-btn" onclick="deleteItem('+item.id+')" aria-label="ลบ"><i class="ti ti-x"></i></button>'+
+      '<div class="item-icon">'+(catEmoji[item.cat]||'📦')+'</div>'+
+      '<div class="item-name">'+item.name+'</div>'+
+      '<div class="item-cat">'+item.cat+'</div>'+
+      '<div class="qty-row"><div class="qty-box">'+
+        '<button class="qty-btn" onclick="changeQty('+item.id+',-1)">−</button>'+
+        '<span class="qty-num">'+item.qty+'</span>'+
+        '<button class="qty-btn" onclick="changeQty('+item.id+',1)">+</button>'+
+      '</div><span class="unit-tag">'+item.unit+'</span></div>'+
+      (low?'<span class="badge-low">ใกล้หมด</span>':'')+
+    '</div>';
+  }).join('');
+}
+
+function changeQty(id,delta){
+  var item=items.find(function(i){return i.id===id;});
+  if(item){item.qty=Math.max(0,item.qty+delta);save();renderItems();}
+}
+function deleteItem(id){
+  items=items.filter(function(i){return i.id!==id;});
+  save();renderItems();
+}
+function addItem(){
+  var name=document.getElementById('new-name').value.trim();
+  if(!name)return;
+  items.push({id:Date.now(),name:name,cat:document.getElementById('new-cat').value,unit:document.getElementById('new-unit').value||'ชิ้น',qty:parseInt(document.getElementById('new-qty').value)||0,min:parseInt(document.getElementById('new-min').value)||1});
+  document.getElementById('new-name').value='';
+  document.getElementById('new-qty').value='';
+  document.getElementById('new-unit').value='';
+  save();renderItems();
+}
+function updateBuySelect(){
+  document.getElementById('buy-item-sel').innerHTML=items.map(function(i){return '<option value="'+i.id+'">'+i.name+' ('+i.qty+' '+i.unit+')</option>';}).join('');
+}
+function updateStats(){
+  document.getElementById('stat-items').textContent=items.length;
+  document.getElementById('stat-low').textContent=items.filter(function(i){return i.qty<=i.min;}).length;
+  var now=new Date();
+  var ym=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  var t=logs.filter(function(l){return l.date.startsWith(ym);}).reduce(function(s,l){return s+(l.price||0);},0);
+  document.getElementById('stat-month').textContent='฿'+Math.round(t).toLocaleString();
+}
+function recordBuy(){
+  var id=parseInt(document.getElementById('buy-item-sel').value);
+  var qty=parseInt(document.getElementById('buy-qty').value)||1;
+  var price=parseFloat(document.getElementById('buy-price').value)||0;
+  var date=document.getElementById('buy-date').value||new Date().toISOString().split('T')[0];
+  var store=document.getElementById('buy-store').value;
+  var note=document.getElementById('buy-note').value;
+  var item=items.find(function(i){return i.id===id;});
+  if(!item)return;
+  item.qty+=qty;
+  logs.unshift({id:Date.now(),itemId:id,name:item.name,cat:item.cat,unit:item.unit,qty:qty,price:price,date:date,store:store,note:note});
+  save();renderItems();updateStats();updateBuySelect();
+  document.getElementById('buy-qty').value='1';
+  document.getElementById('buy-price').value='';
+  document.getElementById('buy-store').value='';
+  document.getElementById('buy-note').value='';
+  var btn=document.getElementById('buy-btn');
+  btn.innerHTML='<i class="ti ti-check"></i> บันทึกแล้ว!';
+  setTimeout(function(){btn.innerHTML='<i class="ti ti-shopping-cart"></i> บันทึกการซื้อ';},1500);
+}
+function formatDateTH(d){
+  var months=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  var p=d.split('-');
+  return parseInt(p[2])+' '+months[parseInt(p[1])-1]+' '+(parseInt(p[0])+543);
+}
+function renderHistory(){
+  var el=document.getElementById('history-view');
+  if(!logs.length){el.innerHTML='<div class="empty">ยังไม่มีประวัติการซื้อ<br><span style="font-size:13px">เริ่มบันทึกได้ที่แท็บ "ซื้อ"</span></div>';return;}
+  var sessions={};
+  logs.forEach(function(l){
+    var key=l.date+(l.store?'__'+l.store:'');
+    if(!sessions[key]) sessions[key]={date:l.date,store:l.store||'',items:[],total:0};
+    sessions[key].items.push(l);
+    sessions[key].total+=l.price||0;
+  });
+  var sessionArr=Object.values(sessions).sort(function(a,b){return b.date.localeCompare(a.date);});
+  var lastSession=sessionArr[0];
+  var lastIds=new Set(lastSession?lastSession.items.map(function(l){return l.itemId;}):[]);
+  var notLast=items.filter(function(i){return !lastIds.has(i.id);});
+  var boughtIds=new Set(logs.map(function(l){return l.itemId;}));
+  var neverBought=items.filter(function(i){return !boughtIds.has(i.id);});
+  var html='';
+  if(notLast.length){
+    html+='<div class="warn-box"><div class="warn-title"><i class="ti ti-clock" style="vertical-align:-2px;margin-right:4px"></i>ยังไม่ได้ซื้อครั้งล่าสุด ('+formatDateTH(lastSession.date)+')</div>';
+    html+='<div class="warn-chips">';
+    notLast.forEach(function(i){html+='<span class="warn-chip">'+(catEmoji[i.cat]||'📦')+' '+i.name+'</span>';});
+    html+='</div></div>';
+  }
+  sessionArr.forEach(function(s,idx){
+    var sid='s'+idx;
+    var isOpen=idx===0;
+    html+='<div class="session-block">';
+    html+='<div class="session-hdr" onclick="toggleSess(\''+sid+'\')">';
+    html+='<i class="ti ti-calendar" style="font-size:16px;color:var(--text2)"></i>';
+    html+='<span class="session-date">'+formatDateTH(s.date)+'</span>';
+    if(s.store) html+='<span class="store-badge">📍 '+s.store+'</span>';
+    html+='<div class="session-meta">';
+    html+='<span>'+s.items.length+' รายการ</span>';
+    if(s.total) html+='<span style="font-weight:600;color:var(--text)">฿'+Math.round(s.total).toLocaleString()+'</span>';
+    html+='<i class="ti ti-chevron-down chevron'+(isOpen?' open':'')+'" id="chev-'+sid+'"></i>';
+    html+='</div></div>';
+    html+='<div class="session-items'+(isOpen?' open':'')+'" id="'+sid+'">';
+    s.items.forEach(function(l){
+      html+='<div class="log-row"><span class="log-icon">'+(catEmoji[l.cat]||'📦')+'</span>';
+      html+='<div><div class="log-name">'+l.name+'</div>';
+      if(l.note) html+='<div class="log-sub">'+l.note+'</div>';
+      html+='</div>';
+      html+='<span class="log-qty">+'+l.qty+' '+l.unit+'</span>';
+      if(l.price) html+='<span class="log-price">฿'+Math.round(l.price).toLocaleString()+'</span>';
+      html+='</div>';
+    });
+    html+='</div></div>';
+  });
+  if(neverBought.length){
+    html+='<div style="margin-top:16px"><div class="sec-title"><i class="ti ti-circle-dashed" style="font-size:15px"></i>ยังไม่เคยบันทึกการซื้อ</div>';
+    html+='<div class="nbuy-grid">';
+    neverBought.forEach(function(i){
+      html+='<div class="nbuy-card"><span class="nbuy-icon">'+(catEmoji[i.cat]||'📦')+'</span><div><div class="nbuy-name">'+i.name+'</div><div class="nbuy-last">ไม่มีประวัติ</div></div></div>';
+    });
+    html+='</div></div>';
+  }
+  el.innerHTML=html;
+}
+function toggleSess(sid){
+  var el=document.getElementById(sid);
+  var chev=document.getElementById('chev-'+sid);
+  var open=el.classList.contains('open');
+  el.classList.toggle('open',!open);
+  chev.classList.toggle('open',!open);
+}
+
+document.getElementById('buy-date').value=new Date().toISOString().split('T')[0];
+renderItems();
+updateStats();
+updateBuySelect();
+</script>
+</body>
+</html>
