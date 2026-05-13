@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -165,298 +166,299 @@ try{
 }catch(e){}
 
 logs=logs.map(function(l){
-  if(!l.date||typeof l.date!=='string'){
-    try{var d=new Date(l.date);l.date=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-    catch(e){l.date=new Date().toISOString().split('T')[0];}
-  }
-  if(!l.date||l.date==='undefined') l.date=new Date().toISOString().split('T')[0];
-  return l;
+if(!l.date||typeof l.date!==‘string’){
+try{var d=new Date(l.date);l.date=d.getFullYear()+’-’+String(d.getMonth()+1).padStart(2,‘0’)+’-’+String(d.getDate()).padStart(2,‘0’);}
+catch(e){l.date=new Date().toISOString().split(‘T’)[0];}
+}
+if(!l.date||l.date===‘undefined’) l.date=new Date().toISOString().split(‘T’)[0];
+return l;
 });
 
 var I18N={
-  th:{
-    app_title:'\u{1F3E0} \u0e04\u0e25\u0e31\u0e07\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49\u0e43\u0e19\u0e1a\u0e49\u0e32\u0e19',
-    app_sub:'\u0e08\u0e31\u0e14\u0e01\u0e32\u0e23\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32\u0e41\u0e25\u0e30\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d\u0e17\u0e38\u0e01\u0e04\u0e23\u0e31\u0e49\u0e07',
-    tab_inventory:'\u0e04\u0e25\u0e31\u0e07', tab_buy:'\u0e0b\u0e37\u0e49\u0e2d', tab_history:'\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34', tab_shoplist:'\u0e0b\u0e37\u0e49\u0e2d\u0e02\u0e2d\u0e07',
-    lbl_name:'\u0e0a\u0e37\u0e48\u0e2d\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32', lbl_cat:'\u0e2b\u0e21\u0e27\u0e14\u0e2b\u0e21\u0e39\u0e48', lbl_unit:'\u0e2b\u0e19\u0e48\u0e27\u0e22', lbl_qty_init:'\u0e08\u0e33\u0e19\u0e27\u0e19\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19',
-    lbl_alert:'\u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e40\u0e21\u0e37\u0e48\u0e2d\u0e40\u0e2b\u0e25\u0e37\u0e2d', lbl_item:'\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32', lbl_qty_buy:'\u0e08\u0e33\u0e19\u0e27\u0e19', lbl_price:'\u0e23\u0e32\u0e04\u0e32 (\u0e3f)',
-    lbl_date:'\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e0b\u0e37\u0e49\u0e2d', lbl_store:'\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48', lbl_note:'\u0e2b\u0e21\u0e32\u0e22\u0e40\u0e2b\u0e15\u0e38', lbl_add_item:'\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23',
-    ph_name:'\u0e40\u0e0a\u0e48\u0e19 \u0e19\u0e49\u0e33\u0e21\u0e31\u0e19\u0e1e\u0e37\u0e0a', ph_unit:'\u0e02\u0e27\u0e14/\u0e01\u0e49\u0e2d\u0e19', ph_store:'\u0e40\u0e0a\u0e48\u0e19 \u0e40\u0e17\u0e2a\u0e42\u0e01\u0e49', ph_note:'\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e40\u0e15\u0e34\u0e21...',
-    btn_add_item:'\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32', btn_record:'\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', btn_recorded:'\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e41\u0e25\u0e49\u0e27!',
-    btn_add_low:'\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e02\u0e2d\u0e07\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14', btn_clear_done:'\u0e25\u0e49\u0e32\u0e07\u0e17\u0e35\u0e48\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',
-    stat_total:'\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14', stat_month:'\u0e04\u0e48\u0e32\u0e43\u0e0a\u0e49\u0e08\u0e48\u0e32\u0e22\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e19\u0e35\u0e49', stat_low:'\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14',
-    filter_all:'\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14', filter_low:'\u26a0\ufe0f \u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14',
-    badge_low:'\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14', items_count:'\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23', bought_last:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e44\u0e14\u0e49\u0e0b\u0e37\u0e49\u0e2d\u0e04\u0e23\u0e31\u0e49\u0e07\u0e25\u0e48\u0e32\u0e2a\u0e38\u0e14',
-    never_bought:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e40\u0e04\u0e22\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_history:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34', no_items:'\u0e44\u0e21\u0e48\u0e1e\u0e1a\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32',
-    no_logs:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_shoplist:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23',
-    no_low:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e02\u0e2d\u0e07\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14\u0e43\u0e19\u0e02\u0e13\u0e30\u0e19\u0e35\u0e49',
-    sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',
-    cats:['\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07','\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49','\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e2a\u0e14','\u0e1c\u0e31\u0e01','\u0e02\u0e2d\u0e07\u0e41\u0e2b\u0e49\u0e07','\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e30\u0e2d\u0e32\u0e14']
-  },
-  en:{
-    app_title:'\u{1F3E0} Household Inventory',
-    app_sub:'Manage items and track every purchase',
-    tab_inventory:'Stock', tab_buy:'Buy', tab_history:'History', tab_shoplist:'Shopping',
-    lbl_name:'Item name', lbl_cat:'Category', lbl_unit:'Unit', lbl_qty_init:'Starting qty',
-    lbl_alert:'Alert when below', lbl_item:'Item', lbl_qty_buy:'Qty', lbl_price:'Price (฿)',
-    lbl_date:'Date', lbl_store:'Store', lbl_note:'Note', lbl_add_item:'Add item',
-    ph_name:'e.g. Cooking oil', ph_unit:'bottle/bar', ph_store:'e.g. Tesco', ph_note:'Optional...',
-    btn_add_item:'Add item', btn_record:'Record purchase', btn_recorded:'Saved!',
-    btn_add_low:'Add low stock items', btn_clear_done:'Clear bought',
-    stat_total:'Total items', stat_month:'This month', stat_low:'Low stock',
-    filter_all:'All', filter_low:'\u26a0\ufe0f Low stock',
-    badge_low:'Low stock', items_count:'items', bought_last:'Not bought last trip',
-    never_bought:'Never purchased', no_history:'No history', no_items:'No items found',
-    no_logs:'No purchase history', no_shoplist:'No items in list',
-    no_low:'No low stock items',
-    sl_count:'Bought',
-    cats:['Seasoning','Household','Fresh food','Vegetables','Dry goods','Cleaning']
-  }
+th:{
+app_title:’\u{1F3E0} \u0e04\u0e25\u0e31\u0e07\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49\u0e43\u0e19\u0e1a\u0e49\u0e32\u0e19’,
+app_sub:’\u0e08\u0e31\u0e14\u0e01\u0e32\u0e23\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32\u0e41\u0e25\u0e30\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d\u0e17\u0e38\u0e01\u0e04\u0e23\u0e31\u0e49\u0e07’,
+tab_inventory:’\u0e04\u0e25\u0e31\u0e07’, tab_buy:’\u0e0b\u0e37\u0e49\u0e2d’, tab_history:’\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34’, tab_shoplist:’\u0e0b\u0e37\u0e49\u0e2d\u0e02\u0e2d\u0e07’,
+lbl_name:’\u0e0a\u0e37\u0e48\u0e2d\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32’, lbl_cat:’\u0e2b\u0e21\u0e27\u0e14\u0e2b\u0e21\u0e39\u0e48’, lbl_unit:’\u0e2b\u0e19\u0e48\u0e27\u0e22’, lbl_qty_init:’\u0e08\u0e33\u0e19\u0e27\u0e19\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19’,
+lbl_alert:’\u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e40\u0e21\u0e37\u0e48\u0e2d\u0e40\u0e2b\u0e25\u0e37\u0e2d’, lbl_item:’\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32’, lbl_qty_buy:’\u0e08\u0e33\u0e19\u0e27\u0e19’, lbl_price:’\u0e23\u0e32\u0e04\u0e32 (\u0e3f)’,
+lbl_date:’\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e0b\u0e37\u0e49\u0e2d’, lbl_store:’\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48’, lbl_note:’\u0e2b\u0e21\u0e32\u0e22\u0e40\u0e2b\u0e15\u0e38’, lbl_add_item:’\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23’,
+ph_name:’\u0e40\u0e0a\u0e48\u0e19 \u0e19\u0e49\u0e33\u0e21\u0e31\u0e19\u0e1e\u0e37\u0e0a’, ph_unit:’\u0e02\u0e27\u0e14/\u0e01\u0e49\u0e2d\u0e19’, ph_store:’\u0e40\u0e0a\u0e48\u0e19 \u0e40\u0e17\u0e2a\u0e42\u0e01\u0e49’, ph_note:’\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e40\u0e15\u0e34\u0e21…’,
+btn_add_item:’\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32’, btn_record:’\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d’, btn_recorded:’\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e41\u0e25\u0e49\u0e27!’,
+btn_add_low:’\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e02\u0e2d\u0e07\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14’, btn_clear_done:’\u0e25\u0e49\u0e32\u0e07\u0e17\u0e35\u0e48\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27’,
+stat_total:’\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14’, stat_month:’\u0e04\u0e48\u0e32\u0e43\u0e0a\u0e49\u0e08\u0e48\u0e32\u0e22\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e19\u0e35\u0e49’, stat_low:’\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14’,
+filter_all:’\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14’, filter_low:’\u26a0\ufe0f \u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14’,
+badge_low:’\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14’, items_count:’\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23’, bought_last:’\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e44\u0e14\u0e49\u0e0b\u0e37\u0e49\u0e2d\u0e04\u0e23\u0e31\u0e49\u0e07\u0e25\u0e48\u0e32\u0e2a\u0e38\u0e14’,
+never_bought:’\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e40\u0e04\u0e22\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d’, no_history:’\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34’, no_items:’\u0e44\u0e21\u0e48\u0e1e\u0e1a\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32’,
+no_logs:’\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d’, no_shoplist:’\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23’,
+no_low:’\u0e44\u0e21\u0e48\u0e21\u0e35\u0e02\u0e2d\u0e07\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14\u0e43\u0e19\u0e02\u0e13\u0e30\u0e19\u0e35\u0e49’,
+sl_count:’\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27’,
+cats:[’\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07’,’\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49’,’\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e2a\u0e14’,’\u0e1c\u0e31\u0e01’,’\u0e02\u0e2d\u0e07\u0e41\u0e2b\u0e49\u0e07’,’\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e30\u0e2d\u0e32\u0e14’]
+},
+en:{
+app_title:’\u{1F3E0} Household Inventory’,
+app_sub:‘Manage items and track every purchase’,
+tab_inventory:‘Stock’, tab_buy:‘Buy’, tab_history:‘History’, tab_shoplist:‘Shopping’,
+lbl_name:‘Item name’, lbl_cat:‘Category’, lbl_unit:‘Unit’, lbl_qty_init:‘Starting qty’,
+lbl_alert:‘Alert when below’, lbl_item:‘Item’, lbl_qty_buy:‘Qty’, lbl_price:‘Price (฿)’,
+lbl_date:‘Date’, lbl_store:‘Store’, lbl_note:‘Note’, lbl_add_item:‘Add item’,
+ph_name:‘e.g. Cooking oil’, ph_unit:‘bottle/bar’, ph_store:‘e.g. Tesco’, ph_note:‘Optional…’,
+btn_add_item:‘Add item’, btn_record:‘Record purchase’, btn_recorded:‘Saved!’,
+btn_add_low:‘Add low stock items’, btn_clear_done:‘Clear bought’,
+stat_total:‘Total items’, stat_month:‘This month’, stat_low:‘Low stock’,
+filter_all:‘All’, filter_low:’\u26a0\ufe0f Low stock’,
+badge_low:‘Low stock’, items_count:‘items’, bought_last:‘Not bought last trip’,
+never_bought:‘Never purchased’, no_history:‘No history’, no_items:‘No items found’,
+no_logs:‘No purchase history’, no_shoplist:‘No items in list’,
+no_low:‘No low stock items’,
+sl_count:‘Bought’,
+cats:[‘Seasoning’,‘Household’,‘Fresh food’,‘Vegetables’,‘Dry goods’,‘Cleaning’]
+}
 };
 
-var CAT_EMOJI={'\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07':'\ud83e\uddc2','\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49':'\ud83e\uddf4','\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e2a\u0e14':'\ud83e\udd66','\u0e1c\u0e31\u0e01':'\ud83e\udd6c','\u0e02\u0e2d\u0e07\u0e41\u0e2b\u0e49\u0e07':'\ud83e\udd6b','\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e30\u0e2d\u0e32\u0e14':'\ud83e\uddf9','Seasoning':'\ud83e\uddc2','Household':'\ud83e\uddf4','Fresh food':'\ud83e\udd66','Vegetables':'\ud83e\udd6c','Dry goods':'\ud83e\udd6b','Cleaning':'\ud83e\uddf9'};
-var CF='all';
+var CAT_EMOJI={’\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07’:’\ud83e\uddc2’,’\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49’:’\ud83e\uddf4’,’\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e2a\u0e14’:’\ud83c\udf57’,’\u0e1c\u0e31\u0e01’:’\ud83e\udd66’,’\u0e02\u0e2d\u0e07\u0e41\u0e2b\u0e49\u0e07’:’\ud83e\udd6b’,’\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e30\u0e2d\u0e32\u0e14’:’\ud83e\uddf9’,‘Seasoning’:’\ud83e\uddc2’,‘Household’:’\ud83e\uddf4’,‘Fresh food’:’\ud83c\udf57’,‘Vegetables’:’\ud83e\udd66’,‘Dry goods’:’\ud83e\udd6b’,‘Cleaning’:’\ud83e\uddf9’};
+var CF=‘all’;
 
 if(!items.length){
-  items=[
-    {id:1,name:'\u0e19\u0e49\u0e33\u0e21\u0e31\u0e19\u0e1e\u0e37\u0e0a',cat:'\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07',unit:'\u0e02\u0e27\u0e14',qty:2,min:1},
-    {id:2,name:'\u0e0b\u0e35\u0e2d\u0e34\u0e49\u0e27\u0e02\u0e32\u0e27',cat:'\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07',unit:'\u0e02\u0e27\u0e14',qty:1,min:1},
-    {id:3,name:'\u0e2a\u0e1a\u0e39\u0e48',cat:'\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49',unit:'\u0e01\u0e49\u0e2d\u0e19',qty:4,min:2},
-    {id:4,name:'\u0e1c\u0e07\u0e0b\u0e31\u0e01\u0e1f\u0e2d\u0e01',cat:'\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e30\u0e2d\u0e32\u0e14',unit:'\u0e16\u0e38\u0e07',qty:0,min:1}
-  ];
-  save();
+items=[
+{id:1,name:’\u0e19\u0e49\u0e33\u0e21\u0e31\u0e19\u0e1e\u0e37\u0e0a’,cat:’\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07’,unit:’\u0e02\u0e27\u0e14’,qty:2,min:1},
+{id:2,name:’\u0e0b\u0e35\u0e2d\u0e34\u0e49\u0e27\u0e02\u0e32\u0e27’,cat:’\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07’,unit:’\u0e02\u0e27\u0e14’,qty:1,min:1},
+{id:3,name:’\u0e2a\u0e1a\u0e39\u0e48’,cat:’\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49’,unit:’\u0e01\u0e49\u0e2d\u0e19’,qty:4,min:2},
+{id:4,name:’\u0e1c\u0e07\u0e0b\u0e31\u0e01\u0e1f\u0e2d\u0e01’,cat:’\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e30\u0e2d\u0e32\u0e14’,unit:’\u0e16\u0e38\u0e07’,qty:0,min:1}
+];
+save();
 }
 
 function t(k){return (I18N[curLang]||I18N.th)[k]||k;}
-function emoji(cat){return CAT_EMOJI[cat]||'\ud83d\udce6';}
+function emoji(cat){return CAT_EMOJI[cat]||’\ud83d\udce6’;}
 
 function applyLang(){
-  document.getElementById('app-title').textContent=t('app_title');
-  document.getElementById('app-sub').textContent=t('app_sub');
-  document.getElementById('lang-btn').textContent=curLang==='th'?'EN':'TH';
-  document.querySelectorAll('[data-i]').forEach(function(el){el.textContent=t(el.dataset.i);});
-  document.querySelectorAll('[data-i-ph]').forEach(function(el){el.placeholder=t(el.dataset.iPh);});
-  renderFilterRow();
-  renderCatOptions();
-  renderItems();
-  updBuySel();
-  updSlSel();
+document.getElementById(‘app-title’).textContent=t(‘app_title’);
+document.getElementById(‘app-sub’).textContent=t(‘app_sub’);
+document.getElementById(‘lang-btn’).textContent=curLang===‘th’?‘EN’:‘TH’;
+document.querySelectorAll(’[data-i]’).forEach(function(el){el.textContent=t(el.dataset.i);});
+document.querySelectorAll(’[data-i-ph]’).forEach(function(el){el.placeholder=t(el.dataset.iPh);});
+renderFilterRow();
+renderCatOptions();
+renderItems();
+updBuySel();
+updSlSel();
 }
 
 function toggleLang(){
-  curLang=curLang==='th'?'en':'th';
-  try{localStorage.setItem(LANGK,curLang);}catch(e){}
-  applyLang();
+curLang=curLang===‘th’?‘en’:‘th’;
+try{localStorage.setItem(LANGK,curLang);}catch(e){}
+applyLang();
 }
 
 function renderFilterRow(){
-  var cats=I18N[curLang].cats;
-  var html='<button class="pill'+(CF==='all'?' active':'')+'" onclick="setFilter(\'all\',this)">'+t('filter_all')+'</button>';
-  cats.forEach(function(c){
-    html+='<button class="pill'+(CF===c?' active':'')+'" onclick="setFilter(\''+c+'\',this)">'+c+'</button>';
-  });
-  html+='<button class="pill'+(CF==='low'?' active':'')+'" onclick="setFilter(\'low\',this)">'+t('filter_low')+'</button>';
-  document.getElementById('filter-row').innerHTML=html;
+var cats=I18N[curLang].cats;
+var html=’<button class="pill'+(CF==='all'?' active':'')+'" onclick="setFilter(\'all\',this)">’+t(‘filter_all’)+’</button>’;
+cats.forEach(function(c){
+html+=’<button class="pill'+(CF===c?' active':'')+'" onclick="setFilter(\''+c+'\',this)">’+c+’</button>’;
+});
+html+=’<button class="pill'+(CF==='low'?' active':'')+'" onclick="setFilter(\'low\',this)">’+t(‘filter_low’)+’</button>’;
+document.getElementById(‘filter-row’).innerHTML=html;
 }
 
 function renderCatOptions(){
-  var cats=I18N[curLang].cats;
-  document.getElementById('new-cat').innerHTML=cats.map(function(c){return '<option>'+c+'</option>';}).join('');
+var cats=I18N[curLang].cats;
+document.getElementById(‘new-cat’).innerHTML=cats.map(function(c){return ‘<option>’+c+’</option>’;}).join(’’);
 }
 
 function save(){try{localStorage.setItem(IK,JSON.stringify(items));localStorage.setItem(LK,JSON.stringify(logs));}catch(e){}}
 function saveSL(){try{localStorage.setItem(SK,JSON.stringify(shoplist));}catch(e){}}
 
 function switchTab(tab){
-  document.querySelectorAll('.tab').forEach(function(el){el.classList.remove('active');});
-  document.querySelectorAll('.section').forEach(function(el){el.classList.remove('active');});
-  document.getElementById('t-'+tab).classList.add('active');
-  document.getElementById('tab-'+tab).classList.add('active');
-  if(tab==='buy'){updBuySel();updStats();}
-  if(tab==='history'){renderHistory();}
-  if(tab==='shoplist'){updSlSel();renderSL();}
+document.querySelectorAll(’.tab’).forEach(function(el){el.classList.remove(‘active’);});
+document.querySelectorAll(’.section’).forEach(function(el){el.classList.remove(‘active’);});
+document.getElementById(‘t-’+tab).classList.add(‘active’);
+document.getElementById(‘tab-’+tab).classList.add(‘active’);
+if(tab===‘buy’){updBuySel();updStats();}
+if(tab===‘history’){renderHistory();}
+if(tab===‘shoplist’){updSlSel();renderSL();}
 }
 
 function setFilter(f,btn){
-  CF=f;
-  document.querySelectorAll('.pill').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  renderItems();
+CF=f;
+document.querySelectorAll(’.pill’).forEach(function(b){b.classList.remove(‘active’);});
+btn.classList.add(‘active’);
+renderItems();
 }
 
 function renderItems(){
-  var g=document.getElementById('item-grid');
-  var fl=items;
-  if(CF==='low') fl=items.filter(function(i){return i.qty<=i.min;});
-  else if(CF!=='all') fl=items.filter(function(i){return i.cat===CF;});
-  if(!fl.length){g.innerHTML='<div class="empty" style="grid-column:1/-1">'+t('no_items')+'</div>';return;}
-  g.innerHTML=fl.map(function(it){
-    var low=it.qty<=it.min;
-    return '<div class="ic'+(low?' low':'')+'">'+
-      '<button class="dbtn" onclick="delItem('+it.id+')"><i class="ti ti-x"></i></button>'+
-      '<div class="ii">'+emoji(it.cat)+'</div>'+
-      '<div class="in">'+it.name+'</div>'+
-      '<div class="icat">'+it.cat+'</div>'+
-      '<div class="qr"><div class="qb">'+
-        '<button class="qbtn" onclick="chgQty('+it.id+',-1)">\u2212</button>'+
-        '<span class="qn">'+it.qty+'</span>'+
-        '<button class="qbtn" onclick="chgQty('+it.id+',1)">+</button>'+
-      '</div><span class="ut">'+it.unit+'</span></div>'+
-      (low?'<span class="blow">'+t('badge_low')+'</span>':'')+
-    '</div>';
-  }).join('');
+var g=document.getElementById(‘item-grid’);
+var fl=items;
+if(CF===‘low’) fl=items.filter(function(i){return i.qty<=i.min;});
+else if(CF!==‘all’) fl=items.filter(function(i){return i.cat===CF;});
+if(!fl.length){g.innerHTML=’<div class="empty" style="grid-column:1/-1">’+t(‘no_items’)+’</div>’;return;}
+g.innerHTML=fl.map(function(it){
+var low=it.qty<=it.min;
+return ‘<div class="ic'+(low?' low':'')+'">’+
+‘<button class="dbtn" onclick="delItem('+it.id+')"><i class="ti ti-x"></i></button>’+
+‘<div class="ii">’+emoji(it.cat)+’</div>’+
+‘<div class="in">’+it.name+’</div>’+
+‘<div class="icat">’+it.cat+’</div>’+
+‘<div class="qr"><div class="qb">’+
+‘<button class="qbtn" onclick="chgQty('+it.id+',-1)">\u2212</button>’+
+‘<span class="qn">’+it.qty+’</span>’+
+‘<button class="qbtn" onclick="chgQty('+it.id+',1)">+</button>’+
+‘</div><span class="ut">’+it.unit+’</span></div>’+
+(low?’<span class="blow">’+t(‘badge_low’)+’</span>’:’’)+
+‘</div>’;
+}).join(’’);
 }
 
 function chgQty(id,d){var it=items.find(function(i){return i.id===id;});if(it){it.qty=Math.max(0,it.qty+d);save();renderItems();}}
 function delItem(id){items=items.filter(function(i){return i.id!==id;});save();renderItems();}
 function addItem(){
-  var n=document.getElementById('new-name').value.trim();
-  if(!n)return;
-  items.push({id:Date.now(),name:n,cat:document.getElementById('new-cat').value,unit:document.getElementById('new-unit').value||'-',qty:parseInt(document.getElementById('new-qty').value)||0,min:parseInt(document.getElementById('new-min').value)||1});
-  document.getElementById('new-name').value='';document.getElementById('new-qty').value='';document.getElementById('new-unit').value='';
-  save();renderItems();updBuySel();updSlSel();
+var n=document.getElementById(‘new-name’).value.trim();
+if(!n)return;
+items.push({id:Date.now(),name:n,cat:document.getElementById(‘new-cat’).value,unit:document.getElementById(‘new-unit’).value||’-’,qty:parseInt(document.getElementById(‘new-qty’).value)||0,min:parseInt(document.getElementById(‘new-min’).value)||1});
+document.getElementById(‘new-name’).value=’’;document.getElementById(‘new-qty’).value=’’;document.getElementById(‘new-unit’).value=’’;
+save();renderItems();updBuySel();updSlSel();
 }
-function updBuySel(){document.getElementById('buy-item-sel').innerHTML=items.map(function(i){return '<option value="'+i.id+'">'+i.name+'</option>';}).join('');}
+function updBuySel(){document.getElementById(‘buy-item-sel’).innerHTML=items.map(function(i){return ‘<option value="'+i.id+'">’+i.name+’</option>’;}).join(’’);}
 function updStats(){
-  document.getElementById('stat-items').textContent=items.length;
-  document.getElementById('stat-low').textContent=items.filter(function(i){return i.qty<=i.min;}).length;
-  var now=new Date(),ym=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-  var tot=logs.filter(function(l){return typeof l.date==='string'&&l.date.startsWith(ym);}).reduce(function(s,l){return s+(l.price||0);},0);
-  document.getElementById('stat-month').textContent='\u0e3f'+Math.round(tot).toLocaleString();
+document.getElementById(‘stat-items’).textContent=items.length;
+document.getElementById(‘stat-low’).textContent=items.filter(function(i){return i.qty<=i.min;}).length;
+var now=new Date(),ym=now.getFullYear()+’-’+String(now.getMonth()+1).padStart(2,‘0’);
+var tot=logs.filter(function(l){return typeof l.date===‘string’&&l.date.startsWith(ym);}).reduce(function(s,l){return s+(l.price||0);},0);
+document.getElementById(‘stat-month’).textContent=’\u0e3f’+Math.round(tot).toLocaleString();
 }
 function recordBuy(){
-  var id=parseInt(document.getElementById('buy-item-sel').value);
-  var qty=parseInt(document.getElementById('buy-qty').value)||1;
-  var price=parseFloat(document.getElementById('buy-price').value)||0;
-  var date=document.getElementById('buy-date').value||new Date().toISOString().split('T')[0];
-  var store=document.getElementById('buy-store').value;
-  var note=document.getElementById('buy-note').value;
-  var it=items.find(function(i){return i.id===id;});
-  if(!it)return;
-  it.qty+=qty;
-  logs.unshift({id:Date.now(),itemId:id,name:it.name,cat:it.cat,unit:it.unit,qty:qty,price:price,date:date,store:store,note:note});
-  save();renderItems();updStats();updBuySel();
-  document.getElementById('buy-qty').value='1';document.getElementById('buy-price').value='';
-  document.getElementById('buy-store').value='';document.getElementById('buy-note').value='';
-  var btn=document.getElementById('buy-btn');
-  btn.innerHTML='<i class="ti ti-check"></i> '+t('btn_recorded');
-  setTimeout(function(){btn.innerHTML='<i class="ti ti-shopping-cart"></i> '+t('btn_record');},1500);
+var id=parseInt(document.getElementById(‘buy-item-sel’).value);
+var qty=parseInt(document.getElementById(‘buy-qty’).value)||1;
+var price=parseFloat(document.getElementById(‘buy-price’).value)||0;
+var date=document.getElementById(‘buy-date’).value||new Date().toISOString().split(‘T’)[0];
+var store=document.getElementById(‘buy-store’).value;
+var note=document.getElementById(‘buy-note’).value;
+var it=items.find(function(i){return i.id===id;});
+if(!it)return;
+it.qty+=qty;
+logs.unshift({id:Date.now(),itemId:id,name:it.name,cat:it.cat,unit:it.unit,qty:qty,price:price,date:date,store:store,note:note});
+save();renderItems();updStats();updBuySel();
+document.getElementById(‘buy-qty’).value=‘1’;document.getElementById(‘buy-price’).value=’’;
+document.getElementById(‘buy-store’).value=’’;document.getElementById(‘buy-note’).value=’’;
+var btn=document.getElementById(‘buy-btn’);
+btn.innerHTML=’<i class="ti ti-check"></i> ‘+t(‘btn_recorded’);
+setTimeout(function(){btn.innerHTML=’<i class="ti ti-shopping-cart"></i> ‘+t(‘btn_record’);},1500);
 }
 function deleteLog(id){
-  logs=logs.filter(function(l){return l.id!==id;});
-  save();renderHistory();
+logs=logs.filter(function(l){return l.id!==id;});
+save();renderHistory();
 }
 function fmtDate(d){
-  if(!d) return '-';
-  d=String(d);
-  if(curLang==='en'){
-    var p=d.split('-');
-    var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return parseInt(p[2])+' '+mo[parseInt(p[1])-1]+' '+p[0];
-  }
-  var months=['\u0e21.\u0e04.','\u0e01.\u0e1e.','\u0e21\u0e35.\u0e04.','\u0e40\u0e21.\u0e22.','\u0e1e.\u0e04.','\u0e21\u0e34.\u0e22.','\u0e01.\u0e04.','\u0e2a.\u0e04.','\u0e01.\u0e22.','\u0e15.\u0e04.','\u0e1e.\u0e22.','\u0e18.\u0e04.'];
-  var p=d.split('-');
-  return parseInt(p[2])+' '+months[parseInt(p[1])-1]+' '+(parseInt(p[0])+543);
+if(!d) return ‘-’;
+d=String(d);
+if(curLang===‘en’){
+var p=d.split(’-’);
+var mo=[‘Jan’,‘Feb’,‘Mar’,‘Apr’,‘May’,‘Jun’,‘Jul’,‘Aug’,‘Sep’,‘Oct’,‘Nov’,‘Dec’];
+return parseInt(p[2])+’ ‘+mo[parseInt(p[1])-1]+’ ‘+p[0];
+}
+var months=[’\u0e21.\u0e04.’,’\u0e01.\u0e1e.’,’\u0e21\u0e35.\u0e04.’,’\u0e40\u0e21.\u0e22.’,’\u0e1e.\u0e04.’,’\u0e21\u0e34.\u0e22.’,’\u0e01.\u0e04.’,’\u0e2a.\u0e04.’,’\u0e01.\u0e22.’,’\u0e15.\u0e04.’,’\u0e1e.\u0e22.’,’\u0e18.\u0e04.’];
+var p=d.split(’-’);
+return parseInt(p[2])+’ ‘+months[parseInt(p[1])-1]+’ ‘+(parseInt(p[0])+543);
 }
 function renderHistory(){
-  var el=document.getElementById('history-view');
-  if(!logs.length){el.innerHTML='<div class="empty">'+t('no_logs')+'</div>';return;}
-  var sess={};
-  logs.forEach(function(l){
-    var k=(l.date||'')+(l.store?'__'+l.store:'');
-    if(!sess[k]) sess[k]={date:l.date,store:l.store||'',items:[],total:0};
-    sess[k].items.push(l);sess[k].total+=l.price||0;
-  });
-  var arr=Object.values(sess).sort(function(a,b){return String(b.date||'').localeCompare(String(a.date||''));});
-  var lastIds=new Set(arr[0]?arr[0].items.map(function(l){return l.itemId;}):[]);
-  var notLast=items.filter(function(i){return !lastIds.has(i.id);});
-  var boughtIds=new Set(logs.map(function(l){return l.itemId;}));
-  var never=items.filter(function(i){return !boughtIds.has(i.id);});
-  var h='';
-  if(notLast.length&&arr[0]){
-    h+='<div class="wb"><div class="wt"><i class="ti ti-clock" style="vertical-align:-2px;margin-right:4px"></i>'+t('bought_last')+' ('+fmtDate(arr[0].date)+')</div><div class="wc">';
-    notLast.forEach(function(i){h+='<span class="wch">'+emoji(i.cat)+' '+i.name+'</span>';});
-    h+='</div></div>';
-  }
-  arr.forEach(function(s,idx){
-    var sid='sess-'+idx,op=idx===0;
-    h+='<div class="sb"><div class="sh" data-sid="'+sid+'" onclick="toggleSess(this)">';
-    h+='<i class="ti ti-calendar" style="font-size:16px;color:var(--text2)"></i>';
-    h+='<span class="sd">'+fmtDate(s.date)+'</span>';
-    if(s.store) h+='<span class="stbg">\ud83d\udccd '+s.store+'</span>';
-    h+='<div class="sm"><span>'+s.items.length+' '+t('items_count')+'</span>';
-    if(s.total) h+='<span style="font-weight:600">\u0e3f'+Math.round(s.total).toLocaleString()+'</span>';
-    h+='<i class="ti ti-chevron-down cv'+(op?' open':'')+'" id="cv-'+sid+'"></i>';
-    h+='</div></div>';
-    h+='<div class="si'+(op?' open':'')+'" id="'+sid+'">';
-    s.items.forEach(function(l){
-      h+='<div class="lr"><span class="li">'+emoji(l.cat)+'</span>';
-      h+='<div><div class="ln">'+l.name+'</div>'+(l.note?'<div class="lsub">'+l.note+'</div>':'')+'</div>';
-      h+='<span class="lq">+'+l.qty+' '+l.unit+'</span>';
-      if(l.price) h+='<span class="lp">\u0e3f'+Math.round(l.price).toLocaleString()+'</span>';
-      h+='<button class="log-del" onclick="deleteLog('+l.id+')" aria-label="delete"><i class="ti ti-trash" style="font-size:14px"></i></button>';
-      h+='</div>';
-    });
-    h+='</div></div>';
-  });
-  if(never.length){
-    h+='<div style="margin-top:16px"><div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px">'+t('never_bought')+'</div><div class="ng">';
-    never.forEach(function(i){h+='<div class="nc"><span style="font-size:20px">'+emoji(i.cat)+'</span><div><div style="font-size:13px;font-weight:500">'+i.name+'</div><div style="font-size:11px;color:var(--text2)">'+t('no_history')+'</div></div></div>';});
-    h+='</div></div>';
-  }
-  el.innerHTML=h;
+var el=document.getElementById(‘history-view’);
+if(!logs.length){el.innerHTML=’<div class="empty">’+t(‘no_logs’)+’</div>’;return;}
+var sess={};
+logs.forEach(function(l){
+var k=(l.date||’’)+(l.store?’__’+l.store:’’);
+if(!sess[k]) sess[k]={date:l.date,store:l.store||’’,items:[],total:0};
+sess[k].items.push(l);sess[k].total+=l.price||0;
+});
+var arr=Object.values(sess).sort(function(a,b){return String(b.date||’’).localeCompare(String(a.date||’’));});
+var lastIds=new Set(arr[0]?arr[0].items.map(function(l){return l.itemId;}):[]);
+var notLast=items.filter(function(i){return !lastIds.has(i.id);});
+var boughtIds=new Set(logs.map(function(l){return l.itemId;}));
+var never=items.filter(function(i){return !boughtIds.has(i.id);});
+var h=’’;
+if(notLast.length&&arr[0]){
+h+=’<div class="wb"><div class="wt"><i class="ti ti-clock" style="vertical-align:-2px;margin-right:4px"></i>’+t(‘bought_last’)+’ (’+fmtDate(arr[0].date)+’)</div><div class="wc">’;
+notLast.forEach(function(i){h+=’<span class="wch">’+emoji(i.cat)+’ ‘+i.name+’</span>’;});
+h+=’</div></div>’;
+}
+arr.forEach(function(s,idx){
+var sid=‘sess-’+idx,op=idx===0;
+h+=’<div class="sb"><div class="sh" data-sid="'+sid+'" onclick="toggleSess(this)">’;
+h+=’<i class="ti ti-calendar" style="font-size:16px;color:var(--text2)"></i>’;
+h+=’<span class="sd">’+fmtDate(s.date)+’</span>’;
+if(s.store) h+=’<span class="stbg">\ud83d\udccd ‘+s.store+’</span>’;
+h+=’<div class="sm"><span>’+s.items.length+’ ‘+t(‘items_count’)+’</span>’;
+if(s.total) h+=’<span style="font-weight:600">\u0e3f’+Math.round(s.total).toLocaleString()+’</span>’;
+h+=’<i class="ti ti-chevron-down cv'+(op?' open':'')+'" id="cv-'+sid+'"></i>’;
+h+=’</div></div>’;
+h+=’<div class="si'+(op?' open':'')+'" id="'+sid+'">’;
+s.items.forEach(function(l){
+h+=’<div class="lr"><span class="li">’+emoji(l.cat)+’</span>’;
+h+=’<div><div class="ln">’+l.name+’</div>’+(l.note?’<div class="lsub">’+l.note+’</div>’:’’)+’</div>’;
+h+=’<span class="lq">+’+l.qty+’ ‘+l.unit+’</span>’;
+if(l.price) h+=’<span class="lp">\u0e3f’+Math.round(l.price).toLocaleString()+’</span>’;
+h+=’<button class="log-del" onclick="deleteLog('+l.id+')" aria-label="delete"><i class="ti ti-trash" style="font-size:14px"></i></button>’;
+h+=’</div>’;
+});
+h+=’</div></div>’;
+});
+if(never.length){
+h+=’<div style="margin-top:16px"><div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px">’+t(‘never_bought’)+’</div><div class="ng">’;
+never.forEach(function(i){h+=’<div class="nc"><span style="font-size:20px">’+emoji(i.cat)+’</span><div><div style="font-size:13px;font-weight:500">’+i.name+’</div><div style="font-size:11px;color:var(--text2)">’+t(‘no_history’)+’</div></div></div>’;});
+h+=’</div></div>’;
+}
+el.innerHTML=h;
 }
 function toggleSess(hdr){
-  var sid=hdr.dataset.sid;
-  var el=document.getElementById(sid),cv=document.getElementById('cv-'+sid);
-  var op=el.classList.contains('open');
-  el.classList.toggle('open',!op);cv.classList.toggle('open',!op);
+var sid=hdr.dataset.sid;
+var el=document.getElementById(sid),cv=document.getElementById(‘cv-’+sid);
+var op=el.classList.contains(‘open’);
+el.classList.toggle(‘open’,!op);cv.classList.toggle(‘open’,!op);
 }
-function updSlSel(){document.getElementById('sl-item-sel').innerHTML=items.map(function(i){return '<option value="'+i.id+'">'+i.name+'</option>';}).join('');}
+function updSlSel(){document.getElementById(‘sl-item-sel’).innerHTML=items.map(function(i){return ‘<option value="'+i.id+'">’+i.name+’</option>’;}).join(’’);}
 function addToShopList(){
-  var id=parseInt(document.getElementById('sl-item-sel').value);
-  var qty=parseInt(document.getElementById('sl-qty').value)||1;
-  var it=items.find(function(i){return i.id===id;});
-  if(!it)return;
-  var ex=shoplist.find(function(s){return s.itemId===id&&!s.done;});
-  if(ex){ex.qty+=qty;}else{shoplist.push({id:Date.now(),itemId:id,name:it.name,cat:it.cat,unit:it.unit,qty:qty,done:false});}
-  saveSL();renderSL();
-  document.getElementById('sl-qty').value='1';
+var id=parseInt(document.getElementById(‘sl-item-sel’).value);
+var qty=parseInt(document.getElementById(‘sl-qty’).value)||1;
+var it=items.find(function(i){return i.id===id;});
+if(!it)return;
+var ex=shoplist.find(function(s){return s.itemId===id&&!s.done;});
+if(ex){ex.qty+=qty;}else{shoplist.push({id:Date.now(),itemId:id,name:it.name,cat:it.cat,unit:it.unit,qty:qty,done:false});}
+saveSL();renderSL();
+document.getElementById(‘sl-qty’).value=‘1’;
 }
 function addLowStock(){
-  var low=items.filter(function(i){return i.qty<=i.min;});
-  if(!low.length){alert(t('no_low'));return;}
-  low.forEach(function(it){
-    var ex=shoplist.find(function(s){return s.itemId===it.id&&!s.done;});
-    if(!ex) shoplist.push({id:Date.now()+Math.random(),itemId:it.id,name:it.name,cat:it.cat,unit:it.unit,qty:1,done:false});
-  });
-  saveSL();renderSL();
+var low=items.filter(function(i){return i.qty<=i.min;});
+if(!low.length){alert(t(‘no_low’));return;}
+low.forEach(function(it){
+var ex=shoplist.find(function(s){return s.itemId===it.id&&!s.done;});
+if(!ex) shoplist.push({id:Date.now()+Math.random(),itemId:it.id,name:it.name,cat:it.cat,unit:it.unit,qty:1,done:false});
+});
+saveSL();renderSL();
 }
 function togSL(id){var s=shoplist.find(function(x){return x.id===id;});if(s){s.done=!s.done;saveSL();renderSL();}}
 function delSL(id){shoplist=shoplist.filter(function(x){return x.id!==id;});saveSL();renderSL();}
 function clearDone(){shoplist=shoplist.filter(function(x){return !x.done;});saveSL();renderSL();}
 function renderSL(){
-  var el=document.getElementById('shoplist-view');
-  if(!shoplist.length){el.innerHTML='<div class="empty">'+t('no_shoplist')+'<br><span style="font-size:13px">'+t('btn_add_low')+'</span></div>';return;}
-  var tot=shoplist.length,dn=shoplist.filter(function(x){return x.done;}).length;
-  var h='<div class="xpb"><div class="xpbi" style="width:'+Math.round(dn/tot*100)+'%"></div></div>';
-  h+='<div class="xsum"><span>'+tot+' '+t('items_count')+'</span><span>'+t('sl_count')+' '+dn+'/'+tot+'</span></div>';
-  shoplist.filter(function(x){return !x.done;}).concat(shoplist.filter(function(x){return x.done;})).forEach(function(s){
-    h+='<div class="xli'+(s.done?' done':'')+'">'+
-      '<button class="xck'+(s.done?' checked':'')+'" onclick="togSL('+s.id+')">'+(s.done?'<i class="ti ti-check"></i>':'')+'</button>'+
-      '<span class="xln">'+emoji(s.cat)+' '+s.name+'</span>'+
-      '<span class="xq">'+s.qty+' '+s.unit+'</span>'+
-      '<button class="xdl" onclick="delSL('+s.id+')"><i class="ti ti-x"></i></button>'+
-    '</div>';
-  });
-  el.innerHTML=h;
+var el=document.getElementById(‘shoplist-view’);
+if(!shoplist.length){el.innerHTML=’<div class="empty">’+t(‘no_shoplist’)+’<br><span style="font-size:13px">’+t(‘btn_add_low’)+’</span></div>’;return;}
+var tot=shoplist.length,dn=shoplist.filter(function(x){return x.done;}).length;
+var h=’<div class="xpb"><div class="xpbi" style="width:'+Math.round(dn/tot*100)+'%"></div></div>’;
+h+=’<div class="xsum"><span>’+tot+’ ‘+t(‘items_count’)+’</span><span>’+t(‘sl_count’)+’ ‘+dn+’/’+tot+’</span></div>’;
+shoplist.filter(function(x){return !x.done;}).concat(shoplist.filter(function(x){return x.done;})).forEach(function(s){
+h+=’<div class="xli'+(s.done?' done':'')+'">’+
+‘<button class="xck'+(s.done?' checked':'')+'" onclick="togSL('+s.id+')">’+(s.done?’<i class="ti ti-check"></i>’:’’)+’</button>’+
+‘<span class="xln">’+emoji(s.cat)+’ ‘+s.name+’</span>’+
+‘<span class="xq">’+s.qty+’ ‘+s.unit+’</span>’+
+‘<button class="xdl" onclick="delSL('+s.id+')"><i class="ti ti-x"></i></button>’+
+‘</div>’;
+});
+el.innerHTML=h;
 }
-document.getElementById('buy-date').value=new Date().toISOString().split('T')[0];
+document.getElementById(‘buy-date’).value=new Date().toISOString().split(‘T’)[0];
 applyLang();
 updStats();
 updBuySel();
 updSlSel();
 renderSL();
 </script>
+
 </body>
 </html>
