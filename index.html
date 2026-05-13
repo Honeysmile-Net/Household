@@ -412,7 +412,7 @@ function addItem(){
   save();renderItems();
 }
 function updateBuySelect(){
-  document.getElementById('buy-item-sel').innerHTML=items.map(function(i){return '<option value="'+i.id+'">'+i.name+' ('+i.qty+' '+i.unit+')</option>';}).join('');
+  document.getElementById('buy-item-sel').innerHTML=items.map(function(i){return '<option value="'+i.id+'">'+i.name+'</option>';}).join('');
 }
 function updateStats(){
   document.getElementById('stat-items').textContent=items.length;
