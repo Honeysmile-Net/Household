@@ -292,7 +292,7 @@ function recordBuy(){
 }
 function deleteLog(id){
   logs=logs.filter(function(l){return l.id!==id;});
-  saveAll();
+  save();
   renderHistory();
 }
 
