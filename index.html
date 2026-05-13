@@ -262,7 +262,7 @@ function updateStats(){
   document.getElementById('stat-low').textContent=items.filter(function(i){return i.qty<=i.min;}).length;
   var now=new Date();
   var ym=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-  var t=logs.filter(function(l){return l.date.startsWith(ym);}).reduce(function(s,l){return s+(l.price||0);},0);
+  var t=logs.filter(function(l){return (typeof l.date==='string'&&l.date.startsWith(ym));}).reduce(function(s,l){return s+(l.price||0);},0);
   document.getElementById('stat-month').textContent='฿'+Math.round(t).toLocaleString();
 }
 function recordBuy(){
@@ -298,11 +298,11 @@ function renderHistory(){
   if(!logs.length){el.innerHTML='<div class="empty">ยังไม่มีประวัติการซื้อ<br><span style="font-size:13px">เริ่มบันทึกได้ที่แท็บ "ซื้อ"</span></div>';return;}
   var sessions={};
   logs.forEach(function(l){
-    var key=l.date+(l.store?'__'+l.store:'');
+    var key=(l.date||'')+(l.store?'__'+l.store:'');
     if(!sessions[key]) sessions[key]={date:l.date,store:l.store||'',items:[],total:0};
     sessions[key].items.push(l);sessions[key].total+=l.price||0;
   });
-  var arr=Object.values(sessions).sort(function(a,b){return b.date.localeCompare(a.date);});
+  var arr=Object.values(sessions).sort(function(a,b){return String(b.date||'').localeCompare(String(a.date||''));});
   var lastIds=new Set(arr[0]?arr[0].items.map(function(l){return l.itemId;}):[]);
   var notLast=items.filter(function(i){return !lastIds.has(i.id);});
   var boughtIds=new Set(logs.map(function(l){return l.itemId;}));
