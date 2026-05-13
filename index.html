@@ -187,6 +187,13 @@
 var ITEMS_KEY='hh3_items',LOGS_KEY='hh3_logs',SHOPLIST_KEY='hh3_shoplist';
 var items=[],logs=[],shoplist=[];
 try{items=JSON.parse(localStorage.getItem(ITEMS_KEY)||'[]');logs=JSON.parse(localStorage.getItem(LOGS_KEY)||'[]');shoplist=JSON.parse(localStorage.getItem(SHOPLIST_KEY)||'[]');}catch(e){}
+logs=logs.map(function(l){
+  if(l.date&&typeof l.date!=='string'){
+    try{var d=new Date(l.date);l.date=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}catch(e){l.date=new Date().toISOString().split('T')[0];}
+  }
+  if(!l.date||l.date==='undefined') l.date=new Date().toISOString().split('T')[0];
+  return l;
+});
 if(!items.length){
   items=[
     {id:1,name:'น้ำมันพืช',cat:'เครื่องปรุง',unit:'ขวด',qty:2,min:1},
@@ -269,12 +276,7 @@ function recordBuy(){
   var id=parseInt(document.getElementById('buy-item-sel').value);
   var qty=parseInt(document.getElementById('buy-qty').value)||1;
   var price=parseFloat(document.getElementById('buy-price').value)||0;
-  var date=function deleteLog(id){
-  logs=logs.filter(function(l){return l.id!==id;});
-  saveAll();
-  renderHistory();
-}
-document.getElementById('buy-date').value||new Date().toISOString().split('T')[0];
+  var date=document.getElementById('buy-date').value||new Date().toISOString().split('T')[0];
   var store=document.getElementById('buy-store').value;
   var note=document.getElementById('buy-note').value;
   var item=items.find(function(i){return i.id===id;});
@@ -288,7 +290,15 @@ document.getElementById('buy-date').value||new Date().toISOString().split('T')[0
   btn.innerHTML='<i class="ti ti-check"></i> บันทึกแล้ว!';
   setTimeout(function(){btn.innerHTML='<i class="ti ti-shopping-cart"></i> บันทึกการซื้อ';},1500);
 }
+function deleteLog(id){
+  logs=logs.filter(function(l){return l.id!==id;});
+  saveAll();
+  renderHistory();
+}
+
 function formatDateTH(d){
+  if(!d) return '-';
+  d=String(d);
   var months=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
   var p=d.split('-');
   return parseInt(p[2])+' '+months[parseInt(p[1])-1]+' '+(parseInt(p[0])+543);
