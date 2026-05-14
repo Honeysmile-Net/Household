@@ -306,7 +306,7 @@ var I18N={
     no_logs:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_shoplist:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23',
     no_low:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e02\u0e2d\u0e07\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14\u0e43\u0e19\u0e02\u0e13\u0e30\u0e19\u0e35\u0e49',
     sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',btn_sort_cat:'เรียงตามหมวดหมู่',btn_share:'แชร์',lbl_edit_title:'แก้ไขสินค้า',btn_cancel:'ยกเลิก',btn_save:'บันทึก',opt_add_cat:'+ เพิ่มหมวดใหม่...',btn_add_stock:'เพิ่มเข้าคลัง',add_form_title:'เพิ่มสินค้าใหม่',add_form_subtitle:'กรอกข้อมูลของใช้ที่ต้องการติดตามในคลัง',btn_clear_form:'ล้างข้อมูล',unit_chips:['ขวด','ก้อน','ถุง','แพ็ค','กล่อง','ชิ้น'],
-    cats:['\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07','\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49','\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e2a\u0e14','\u0e1c\u0e31\u0e01','\u0e02\u0e2d\u0e07\u0e41\u0e2b\u0e49\u0e07','\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e30\u0e2d\u0e32\u0e14','\u0e19\u0e21','\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e14\u0e37\u0e48\u0e21']
+    cats:['เครื่องปรุง','ของใช้','อาหารสด','ผัก','ของแห้ง','ทำความสะอาด','นม','เครื่องดื่ม']
   },
   en:{
     app_title:'\u{1F3E0} Household Inventory',
@@ -333,13 +333,76 @@ var CAT_EMOJI={'\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e
 var selectedFilters=['all'];
 var sortByCat=false;
 var CATS_KEY='hh4_cats';
+var DEFAULT_CAT_MAP=[
+  {th:'เครื่องปรุง',en:'Seasoning'},
+  {th:'ของใช้',en:'Household'},
+  {th:'อาหารสด',en:'Fresh food'},
+  {th:'ผัก',en:'Vegetables'},
+  {th:'ของแห้ง',en:'Dry goods'},
+  {th:'ทำความสะอาด',en:'Cleaning'},
+  {th:'นม',en:'Milk'},
+  {th:'เครื่องดื่ม',en:'Drinks'}
+];
 var catList=[];
 try{catList=JSON.parse(localStorage.getItem(CATS_KEY)||'[]');}catch(e){}
 if(!catList.length){
   var dth=I18N.th.cats, den=I18N.en.cats;
   catList=dth.map(function(c,i){return {th:c,en:den[i]||c};});
   try{localStorage.setItem(CATS_KEY,JSON.stringify(catList));}catch(e){}
+} else {
+  var dth2=I18N.th.cats, den2=I18N.en.cats;
+  var changed=false;
+  catList.forEach(function(c){
+    // Always re-sync EN from TH if EN is missing or same as TH
+    if(!c.en||c.en===c.th){
+      var ti=dth2.indexOf(c.th);
+      if(ti>=0&&den2[ti]&&den2[ti]!==c.th){c.en=den2[ti];changed=true;}
+    }
+    // Always re-sync TH from EN if TH is missing or same as EN
+    if(!c.th||c.th===c.en){
+      var ei=den2.indexOf(c.en);
+      if(ei>=0&&dth2[ei]&&dth2[ei]!==c.en){c.th=dth2[ei];changed=true;}
+    }
+  });
+  // Force reseed if catList has mismatched count vs I18N defaults
+  var defaultPairs=dth2.map(function(th,i){return th+':'+den2[i];}).join(',');
+  var currentPairs=catList.filter(function(c){return dth2.indexOf(c.th)>=0;}).map(function(c){return c.th+':'+c.en;}).join(',');
+  if(changed) try{localStorage.setItem(CATS_KEY,JSON.stringify(catList));}catch(e){}
 }
+// Force-sync default cats TH<->EN using hardcoded map
+(function(){
+  var MAP=[
+    {th:'เครื่องปรุง',en:'Seasoning'},
+    {th:'ของใช้',en:'Household'},
+    {th:'อาหารสด',en:'Fresh food'},
+    {th:'ผัก',en:'Vegetables'},
+    {th:'ของแห้ง',en:'Dry goods'},
+    {th:'ทำความสะอาด',en:'Cleaning'},
+    {th:'นม',en:'Milk'},
+    {th:'เครื่องดื่ม',en:'Drinks'}
+  ];
+  var changed=false;
+  catList.forEach(function(c){
+    var m=MAP.find(function(x){return x.th===c.th||x.en===c.en;});
+    if(m){
+      if(c.en!==m.en){c.en=m.en;changed=true;}
+      if(c.th!==m.th){c.th=m.th;changed=true;}
+    }
+  });
+  if(changed) try{localStorage.setItem(CATS_KEY,JSON.stringify(catList));}catch(e){}
+})();
+// Ensure all default cats exist in catList
+(function(){
+  var changed=false;
+  DEFAULT_CAT_MAP.forEach(function(m){
+    var exists=catList.find(function(c){return c.th===m.th||c.en===m.en;});
+    if(!exists){
+      catList.push({th:m.th,en:m.en});
+      changed=true;
+    }
+  });
+  if(changed) try{localStorage.setItem(CATS_KEY,JSON.stringify(catList));}catch(e){}
+})();
 function allCats(lang){
   return catList.map(function(c){return lang==='th'?c.th:c.en;});
 }
@@ -358,8 +421,12 @@ if(!items.length){
 
 function t(k){return (I18N[curLang]||I18N.th)[k]||k;}
 function emoji(cat){
+  // Check catList for custom icon
   var c=catList.find(function(x){return x.th===cat||x.en===cat;});
   if(c&&c.icon) return c.icon;
+  // Fallback to DEFAULT_CAT_MAP display name then CAT_EMOJI
+  var m=DEFAULT_CAT_MAP.find(function(x){return x.th===cat||x.en===cat;});
+  if(m) return CAT_EMOJI[m.th]||CAT_EMOJI[m.en]||'📦';
   return CAT_EMOJI[cat]||'📦';
 }
 
@@ -391,6 +458,16 @@ function itemMatchesCategoryKey(item, key){
   var c=catList[idx];
   if(!c) return false;
   return item.cat===c.th||item.cat===c.en;
+}
+
+function catDisplayName(cat){
+  // Try hardcoded map first (handles default cats regardless of localStorage state)
+  var m=DEFAULT_CAT_MAP.find(function(x){return x.th===cat||x.en===cat;});
+  if(m) return curLang==='th'?m.th:m.en;
+  // Then try catList (for user-added custom cats)
+  var c=catList.find(function(x){return x.th===cat||x.en===cat;});
+  if(c) return curLang==='th'?c.th:c.en;
+  return cat;
 }
 function catKeyToLabel(key){
   if(!key||key.indexOf('cat:')!==0) return key;
@@ -591,7 +668,7 @@ function renderItems(){
     var low=it.qty<=it.min;
     return '<div class="ir'+(low?' ir-low':'')+'">'+
       '<span class="ir-icon">'+emoji(it.cat)+'</span>'+
-      '<span class="ir-cat">'+it.cat+'</span>'+
+      '<span class="ir-cat">'+catDisplayName(it.cat)+'</span>'+
       '<span class="ir-name">'+it.name+'</span>'+
       '<div class="ir-qb">'+
         '<button class="ir-qbtn" onclick="chgQty('+it.id+',-1)">−</button>'+
