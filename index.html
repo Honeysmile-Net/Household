@@ -330,7 +330,20 @@ function recordBuy(){
   var id=parseInt(document.getElementById('buy-item-sel').value);
   var qty=parseInt(document.getElementById('buy-qty').value)||1;
   var price=parseFloat(document.getElementById('buy-price').value)||0;
-  var date=
+  var date=document.getElementById('buy-date').value||new Date().toISOString().split('T')[0];
+  var store=document.getElementById('buy-store').value;
+  var note=document.getElementById('buy-note').value;
+  var it=items.find(function(i){return i.id===id;});
+  if(!it)return;
+  it.qty+=qty;
+  logs.unshift({id:Date.now(),itemId:id,name:it.name,cat:it.cat,unit:it.unit,qty:qty,price:price,date:date,store:store,note:note});
+  save();renderItems();updStats();updBuySel();
+  document.getElementById('buy-qty').value='1';document.getElementById('buy-price').value='';
+  document.getElementById('buy-store').value='';document.getElementById('buy-note').value='';
+  var btn=document.getElementById('buy-btn');
+  btn.innerHTML='<i class="ti ti-check"></i> '+t('btn_recorded');
+  setTimeout(function(){btn.innerHTML='<i class="ti ti-shopping-cart"></i> '+t('btn_record');},1500);
+}
 function shareShoplist(){
   if(!shoplist.length) return;
   var pending=shoplist.filter(function(x){return !x.done;});
@@ -356,20 +369,7 @@ function shareShoplist(){
     }).catch(function(){alert(text);});
   }
 }
-document.getElementById('buy-date').value||new Date().toISOString().split('T')[0];
-  var store=document.getElementById('buy-store').value;
-  var note=document.getElementById('buy-note').value;
-  var it=items.find(function(i){return i.id===id;});
-  if(!it)return;
-  it.qty+=qty;
-  logs.unshift({id:Date.now(),itemId:id,name:it.name,cat:it.cat,unit:it.unit,qty:qty,price:price,date:date,store:store,note:note});
-  save();renderItems();updStats();updBuySel();
-  document.getElementById('buy-qty').value='1';document.getElementById('buy-price').value='';
-  document.getElementById('buy-store').value='';document.getElementById('buy-note').value='';
-  var btn=document.getElementById('buy-btn');
-  btn.innerHTML='<i class="ti ti-check"></i> '+t('btn_recorded');
-  setTimeout(function(){btn.innerHTML='<i class="ti ti-shopping-cart"></i> '+t('btn_record');},1500);
-}
+
 function deleteLog(id){
   logs=logs.filter(function(l){return l.id!==id;});
   save();renderHistory();
