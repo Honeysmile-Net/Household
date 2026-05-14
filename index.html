@@ -159,6 +159,9 @@ min-height:0;
 .icon-opt{font-size:22px;padding:5px 7px;border:1.5px solid rgba(61,184,154,.2);border-radius:8px;background:rgba(255,255,255,.7);cursor:pointer;line-height:1;-webkit-appearance:none;transition:all .1s;flex-shrink:0}
 .icon-opt:active{transform:scale(.9)}
 .cat-tab-btn{transition:color .15s,border-bottom-color .15s}
+
+#form-body{overflow:hidden;transition:none}
+.inv-form-panel .form-header:hover{opacity:.9}
 </style>
 
 </head>
@@ -201,13 +204,19 @@ min-height:0;
     </div>
     <!-- BOTTOM: Add Item Form -->
     <div class="inv-form-panel">
-      <div class="form-header">
-        <div>
+      <div class="form-header" onclick="toggleForm()" style="cursor:pointer;user-select:none;-webkit-user-select:none">
+        <div style="flex:1">
           <div class="form-title"><i class="ti ti-plus" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i><span data-i="add_form_title"></span></div>
-          <div class="form-subtitle" data-i="add_form_subtitle"></div>
+          <div class="form-subtitle" data-i="add_form_subtitle" id="form-subtitle-text"></div>
         </div>
-        <button type="button" class="btn-clear-form" onclick="clearForm()" data-i="btn_clear_form"></button>
+        <div style="display:flex;align-items:center;gap:6px">
+          <button type="button" class="btn-clear-form" onclick="event.stopPropagation();clearForm()" data-i="btn_clear_form" id="form-clear-btn"></button>
+          <button type="button" id="form-toggle-btn" onclick="event.stopPropagation();toggleForm()" style="background:none;border:none;cursor:pointer;padding:4px;color:var(--text2)" title="">
+            <span id="form-toggle-icon" style="font-size:12px;transition:transform .25s;display:inline-block;line-height:1">&#9650;</span>
+          </button>
+        </div>
       </div>
+      <div id="form-body">
       <div class="field"><label data-i="lbl_name"></label><input type="text" id="new-name" data-i-ph="ph_name"></div>
       <div class="form-row-2">
         <div class="field"><label data-i="lbl_cat"></label>
@@ -224,6 +233,7 @@ min-height:0;
         <div class="field"><label data-i="lbl_alert"></label><input type="number" id="new-min" placeholder="1" min="0" inputmode="numeric"></div>
       </div>
       <button type="button" class="btn btn-p" onclick="addItem()" style="width:100%;justify-content:center;margin-top:2px"><i class="ti ti-plus"></i> <span data-i="btn_add_stock"></span></button>
+      </div>
     </div>
   </div>
 </div>
@@ -301,7 +311,7 @@ var I18N={
     never_bought:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e40\u0e04\u0e22\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_history:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34', no_items:'\u0e44\u0e21\u0e48\u0e1e\u0e1a\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32',
     no_logs:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_shoplist:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23',
     no_low:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e02\u0e2d\u0e07\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14\u0e43\u0e19\u0e02\u0e13\u0e30\u0e19\u0e35\u0e49',
-    sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',btn_sort_cat:'เรียงตามหมวดหมู่',btn_sort_cat_active:'กำลังเรียงตามหมวดหมู่',add_cat_title:'จัดการหมวดหมู่',add_cat_subtitle:'เพิ่ม ลบ และเลือกไอคอนหมวดหมู่',tab_add_cat:'เพิ่มหมวด',tab_delete_cat:'ลบหมวด',lbl_cat_icon:'ไอคอน',lbl_cat_th:'ชื่อภาษาไทย',lbl_cat_en:'ชื่อภาษาอังกฤษ',ph_cat_th:'เช่น เบเกอรี่',ph_cat_en:'e.g. Bakery',alert_cat_required:'กรุณาใส่ชื่อทั้งภาษาไทยและอังกฤษ',empty_cat:'ไม่มีหมวดหมู่',btn_share:'แชร์',lbl_edit_title:'แก้ไขสินค้า',btn_cancel:'ยกเลิก',btn_save:'บันทึก',opt_add_cat:'+ เพิ่มหมวดใหม่...',btn_add_stock:'เพิ่มเข้าคลัง',add_form_title:'เพิ่มสินค้าใหม่',add_form_subtitle:'กรอกข้อมูลของใช้ที่ต้องการติดตามในคลัง',btn_clear_form:'ล้างข้อมูล',unit_chips:['ขวด','ก้อน','ถุง','แพ็ค','กล่อง','ชิ้น'],
+    sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',btn_sort_cat:'เรียงตามหมวดหมู่',btn_sort_cat_active:'กำลังเรียงตามหมวดหมู่',form_collapse:'ยุบฟอร์ม',form_expand:'เปิดฟอร์ม',add_cat_title:'จัดการหมวดหมู่',add_cat_subtitle:'เพิ่ม ลบ และเลือกไอคอนหมวดหมู่',tab_add_cat:'เพิ่มหมวด',tab_delete_cat:'ลบหมวด',lbl_cat_icon:'ไอคอน',lbl_cat_th:'ชื่อภาษาไทย',lbl_cat_en:'ชื่อภาษาอังกฤษ',ph_cat_th:'เช่น เบเกอรี่',ph_cat_en:'e.g. Bakery',alert_cat_required:'กรุณาใส่ชื่อทั้งภาษาไทยและอังกฤษ',empty_cat:'ไม่มีหมวดหมู่',btn_share:'แชร์',lbl_edit_title:'แก้ไขสินค้า',btn_cancel:'ยกเลิก',btn_save:'บันทึก',opt_add_cat:'+ เพิ่มหมวดใหม่...',btn_add_stock:'เพิ่มเข้าคลัง',add_form_title:'เพิ่มสินค้าใหม่',add_form_subtitle:'กรอกข้อมูลของใช้ที่ต้องการติดตามในคลัง',btn_clear_form:'ล้างข้อมูล',unit_chips:['ขวด','ก้อน','ถุง','แพ็ค','กล่อง','ชิ้น'],
     cats:['เครื่องปรุง','ของใช้','อาหารสด','ผัก','ของแห้ง','ทำความสะอาด','นม','เครื่องดื่ม']
   },
   en:{
@@ -313,7 +323,7 @@ var I18N={
     lbl_date:'Date', lbl_store:'Store', lbl_note:'Note', lbl_add_item:'Add item',
     ph_name:'e.g. Cooking oil', ph_unit:'bottle/bar', ph_store:'e.g. Tesco', ph_note:'Optional...',
     btn_add_item:'Add item', btn_record:'Record purchase', btn_recorded:'Saved!',
-    btn_add_low:'Add low stock items', btn_clear_done:'Clear bought',btn_share:'Share',btn_sort_cat:'Sort by category',btn_sort_cat_active:'Sorted by category',add_cat_title:'Manage categories',add_cat_subtitle:'Add, delete, and choose category icons',tab_add_cat:'Add category',tab_delete_cat:'Delete category',lbl_cat_icon:'Icon',lbl_cat_th:'Thai name',lbl_cat_en:'English name',ph_cat_th:'e.g. เบเกอรี่',ph_cat_en:'e.g. Bakery',alert_cat_required:'Please enter both Thai and English category names.',empty_cat:'No categories',
+    btn_add_low:'Add low stock items', btn_clear_done:'Clear bought',btn_share:'Share',btn_sort_cat:'Sort by category',btn_sort_cat_active:'Sorted by category',form_collapse:'Collapse form',form_expand:'Expand form',add_cat_title:'Manage categories',add_cat_subtitle:'Add, delete, and choose category icons',tab_add_cat:'Add category',tab_delete_cat:'Delete category',lbl_cat_icon:'Icon',lbl_cat_th:'Thai name',lbl_cat_en:'English name',ph_cat_th:'e.g. เบเกอรี่',ph_cat_en:'e.g. Bakery',alert_cat_required:'Please enter both Thai and English category names.',empty_cat:'No categories',
     stat_total:'Total items', stat_month:'This month', stat_low:'Low stock',
     filter_all:'All', filter_low:'\u26a0\ufe0f Low stock',
     badge_low:'Low stock', items_count:'items', bought_last:'Not bought last trip',
@@ -904,6 +914,23 @@ function renderUnitChips(){
     var onclick='setUnit(this.textContent)';
     return '<button type="button" class="chip'+(active?' chip-active':'')+'" onclick="'+onclick+'">'+c+'</button>';
   }).join('');
+}
+var formCollapsed=false;
+function toggleForm(){
+  formCollapsed=!formCollapsed;
+  var body=document.getElementById('form-body');
+  var icon=document.getElementById('form-toggle-icon');
+  var clearBtn=document.getElementById('form-clear-btn');
+  if(!body||!icon) return;
+  if(formCollapsed){
+    body.style.display='none';
+    icon.innerHTML='&#9660;';
+    if(clearBtn) clearBtn.style.display='none';
+  } else {
+    body.style.display='block';
+    icon.innerHTML='&#9650;';
+    if(clearBtn) clearBtn.style.display='';
+  }
 }
 document.addEventListener('DOMContentLoaded',function(){
   document.getElementById('buy-date').value=new Date().toISOString().split('T')[0];
