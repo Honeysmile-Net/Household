@@ -88,6 +88,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
 .xpb{height:5px;background:var(--bg3);border-radius:999px;margin-bottom:8px;overflow:hidden}
 .xpbi{height:100%;background:#1D9E75;border-radius:999px;transition:width .3s ease}
 .xsum{font-size:12px;color:var(--text2);margin-bottom:12px;display:flex;justify-content:space-between}
+
+.inv-layout{display:grid;grid-template-columns:1fr 2fr;gap:16px;align-items:start}
+.inv-left{position:sticky;top:calc(120px + env(safe-area-inset-top,0px))}
+.inv-right{}
+@media(max-width:600px){
+  .inv-layout{grid-template-columns:1fr;gap:0}
+  .inv-left{position:static;margin-bottom:12px}
+}
 </style>
 </head>
 <body>
@@ -106,23 +114,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
 </div>
 <div class="content">
   <div id="tab-inventory" class="section active">
-    <div class="card">
-      <div class="r3">
+  <div class="inv-layout">
+    <!-- Left: Add Item Form -->
+    <div class="inv-left">
+      <div class="card" style="margin-bottom:0">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:6px"><i class="ti ti-plus" style="font-size:14px"></i> <span data-i="btn_add_item"></span></div>
         <div class="field"><label data-i="lbl_name"></label><input type="text" id="new-name" data-i-ph="ph_name"></div>
         <div class="field"><label data-i="lbl_cat"></label>
           <select id="new-cat" onchange="onCatChange(this)"></select>
         </div>
         <div class="field"><label data-i="lbl_unit"></label><input type="text" id="new-unit" data-i-ph="ph_unit"></div>
+        <div class="r2">
+          <div class="field"><label data-i="lbl_qty_init"></label><input type="number" id="new-qty" placeholder="0" min="0" inputmode="numeric"></div>
+          <div class="field"><label data-i="lbl_alert"></label><input type="number" id="new-min" placeholder="1" min="0" inputmode="numeric"></div>
+        </div>
+        <button type="button" class="btn btn-p" onclick="addItem()"><i class="ti ti-plus"></i> <span data-i="btn_add_item"></span></button>
       </div>
-      <div class="r2">
-        <div class="field"><label data-i="lbl_qty_init"></label><input type="number" id="new-qty" placeholder="0" min="0" inputmode="numeric"></div>
-        <div class="field"><label data-i="lbl_alert"></label><input type="number" id="new-min" placeholder="1" min="0" inputmode="numeric"></div>
-      </div>
-      <button class="btn btn-p" onclick="addItem()"><i class="ti ti-plus"></i> <span data-i="btn_add_item"></span></button>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><button id="sort-btn" onclick="toggleSort()" style="padding:5px 12px;border-radius:999px;font-size:12px;cursor:pointer;border:.5px solid var(--border2);background:var(--bg);color:var(--text2);-webkit-appearance:none" id="sort-btn-text">เรียงตามหมวด</button></div><div class="fr" id="filter-row"></div>
-    <div id="item-grid"></div>
+    <!-- Right: Inventory List -->
+    <div class="inv-right">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <button id="sort-btn" onclick="toggleSort()" style="padding:5px 12px;border-radius:999px;font-size:12px;cursor:pointer;border:.5px solid var(--border2);background:var(--bg);color:var(--text2);-webkit-appearance:none" id="sort-btn-text">เรียงตามหมวด</button>
+      </div>
+      <div class="fr" id="filter-row"></div>
+      <div id="item-grid"></div>
+    </div>
   </div>
+</div>
+
   <div id="tab-buy" class="section">
     <div class="sr">
       <div class="st"><div class="sl" data-i="stat_total"></div><div class="sn" id="stat-items">0</div></div>
