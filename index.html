@@ -120,7 +120,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
       </div>
       <button class="btn btn-p" onclick="addItem()"><i class="ti ti-plus"></i> <span data-i="btn_add_item"></span></button>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><button id="sort-btn" onclick="toggleSort()" style="padding:5px 12px;border-radius:999px;font-size:12px;cursor:pointer;border:.5px solid var(--border2);background:var(--bg);color:var(--text2);-webkit-appearance:none" data-i="btn_sort_cat"></button></div><div class="fr" id="filter-row"></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><button id="sort-btn" onclick="toggleSort()" style="padding:5px 12px;border-radius:999px;font-size:12px;cursor:pointer;border:.5px solid var(--border2);background:var(--bg);color:var(--text2);-webkit-appearance:none" id="sort-btn-text">เรียงตามหมวด</button></div><div class="fr" id="filter-row"></div>
     <div id="item-grid"></div>
   </div>
   <div id="tab-buy" class="section">
@@ -196,7 +196,7 @@ var I18N={
     never_bought:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e40\u0e04\u0e22\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_history:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34', no_items:'\u0e44\u0e21\u0e48\u0e1e\u0e1a\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32',
     no_logs:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_shoplist:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23',
     no_low:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e02\u0e2d\u0e07\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14\u0e43\u0e19\u0e02\u0e13\u0e30\u0e19\u0e35\u0e49',
-    sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',
+    sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',btn_sort_cat:'เรียงตามหมวดหมู่',btn_share:'แชร์',lbl_edit_title:'แก้ไขสินค้า',btn_cancel:'ยกเลิก',btn_save:'บันทึก',opt_add_cat:'+ เพิ่มหมวดใหม่...',
     cats:['\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07','\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49','\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e2a\u0e14','\u0e1c\u0e31\u0e01','\u0e02\u0e2d\u0e07\u0e41\u0e2b\u0e49\u0e07','\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e30\u0e2d\u0e32\u0e14','\u0e19\u0e21','\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e14\u0e37\u0e48\u0e21']
   },
   en:{
@@ -214,7 +214,7 @@ var I18N={
     badge_low:'Low stock', items_count:'items', bought_last:'Not bought last trip',
     never_bought:'Never purchased', no_history:'No history', no_items:'No items found',
     no_logs:'No purchase history', no_shoplist:'No items in list',
-    no_low:'No low stock items',lbl_edit_title:'Edit item',btn_cancel:'Cancel',btn_save:'Save',
+    no_low:'No low stock items',lbl_edit_title:'Edit item',btn_cancel:'Cancel',btn_save:'Save',opt_add_cat:'+ Add new category...',
     sl_count:'Bought',
     cats:['Seasoning','Household','Fresh food','Vegetables','Dry goods','Cleaning','Milk','Drinks']
   }
@@ -261,6 +261,8 @@ function applyLang(){
   renderItems();
   updBuySel();
   updSlSel();
+  var sb=document.getElementById('sort-btn-text');
+  if(sb) sb.textContent=t('btn_sort_cat');
 }
 
 function toggleLang(){
@@ -282,7 +284,7 @@ function renderFilterRow(){
 function renderCatOptions(){
   var cats=allCats(curLang);
   var html=cats.map(function(c){return '<option>'+c+'</option>';}).join('');
-  html+='<option value="__add__" id="opt-add-cat">+ เพิ่มหมวดใหม่...</option>';
+  html+='<option value="__add__" id="opt-add-cat">'+t('opt_add_cat')+'</option>';
   document.getElementById('new-cat').innerHTML=html;
   document.getElementById('new-cat').value=cats[0]||'';
 }
