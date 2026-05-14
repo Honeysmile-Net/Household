@@ -354,18 +354,31 @@ function toggleLang(){
   applyLang();
 }
 
+function itemMatchesCategoryKey(item, key){
+  if(!key||key.indexOf('cat:')!==0) return false;
+  var idx=parseInt(key.split(':')[1]);
+  var c=catList[idx];
+  if(!c) return false;
+  return item.cat===c.th||item.cat===c.en;
+}
+function catKeyToLabel(key){
+  if(!key||key.indexOf('cat:')!==0) return key;
+  var idx=parseInt(key.split(':')[1]);
+  var c=catList[idx];
+  if(!c) return key;
+  return curLang==='th'?c.th:c.en;
+}
 function renderFilterDropdown(){
-  var cats=allCats(curLang);
   var isEN=curLang==='en';
   var allLabel=isEN?'All':'ทั้งหมด';
   var lowLabel=isEN?'⚠️ Low stock':'⚠️ ใกล้หมด';
   var opts=[{v:'all',l:allLabel},{v:'low',l:lowLabel}];
-  cats.forEach(function(c){opts.push({v:c,l:c});});
+  catList.forEach(function(c,i){opts.push({v:'cat:'+i,l:isEN?c.en:c.th});});
   var menu=document.getElementById('filter-dropdown-menu');
   if(!menu) return;
   menu.innerHTML=opts.map(function(o){
-    var checked=selectedFilters.indexOf(o.v)>=0;
-    return '<label class="filter-opt">'+'<input type="checkbox" value="'+o.v+'" '+(checked?'checked':'')+' onchange="toggleFilterOption(this.value,this.checked)">'+'<span>'+o.l+'</span></label>';
+    var chk=selectedFilters.indexOf(o.v)>=0;
+    return '<label class="filter-opt"><input type="checkbox" value="'+o.v+'" '+(chk?'checked':'')+' onchange="toggleFilterOption(this.value,this.checked)"><span>'+o.l+'</span></label>';
   }).join('');
   updateFilterSummary();
 }
@@ -377,10 +390,21 @@ function updateFilterSummary(){
     el.textContent=isEN?'All':'ทั้งหมด';
   } else if(selectedFilters.length===1&&selectedFilters[0]==='low'){
     el.textContent=isEN?'Low stock':'ใกล้หมด';
-  } else if(selectedFilters.length===1){
-    el.textContent=selectedFilters[0];
   } else {
-    el.textContent=selectedFilters.length+(isEN?' categories selected':' หมวดที่เลือก');
+    var catKeys=selectedFilters.filter(function(f){return f!=='low';});
+    var hasLow=selectedFilters.indexOf('low')>=0;
+    if(catKeys.length===1&&!hasLow){
+      el.textContent=catKeyToLabel(catKeys[0]);
+    } else {
+      var parts=[];
+      if(hasLow) parts.push(isEN?'Low stock':'ใกล้หมด');
+      catKeys.forEach(function(k){parts.push(catKeyToLabel(k));});
+      if(parts.length<=2){
+        el.textContent=parts.join(', ');
+      } else {
+        el.textContent=parts.length+(isEN?' categories selected':' หมวดที่เลือก');
+      }
+    }
   }
 }
 function toggleFilterOption(val,checked){
@@ -486,7 +510,7 @@ function renderItems(){
   if(selectedFilters.indexOf('all')<0){
     fl=fl.filter(function(i){
       var matchLow=selectedFilters.indexOf('low')>=0&&i.qty<=i.min;
-      var matchCat=selectedFilters.some(function(f){return f!=='low'&&f===i.cat;});
+      var matchCat=selectedFilters.some(function(f){return itemMatchesCategoryKey(i,f);});
       return matchLow||matchCat;
     });
   }
