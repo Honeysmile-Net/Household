@@ -148,7 +148,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
       </div>
       <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn btn-sm" onclick="addLowStock()"><i class="ti ti-alert-triangle" style="font-size:13px"></i> <span data-i="btn_add_low"></span></button>
-        <button class="btn btn-sm" onclick="clearDone()" style="margin-left:auto;color:#A32D2D;border-color:#E24B4A"><i class="ti ti-trash" style="font-size:13px"></i> <span data-i="btn_clear_done"></span></button>
+        <button class="btn btn-sm btn-p" id="share-btn" onclick="shareShoplist()" style="margin-left:auto">&#128279; <span data-i="btn_share"></span></button>
+        <button class="btn btn-sm" onclick="clearDone()" style="color:#A32D2D;border-color:#E24B4A"><i class="ti ti-trash" style="font-size:13px"></i> <span data-i="btn_clear_done"></span></button>
       </div>
     </div>
     <div id="shoplist-view"></div>
@@ -202,7 +203,7 @@ var I18N={
     lbl_date:'Date', lbl_store:'Store', lbl_note:'Note', lbl_add_item:'Add item',
     ph_name:'e.g. Cooking oil', ph_unit:'bottle/bar', ph_store:'e.g. Tesco', ph_note:'Optional...',
     btn_add_item:'Add item', btn_record:'Record purchase', btn_recorded:'Saved!',
-    btn_add_low:'Add low stock items', btn_clear_done:'Clear bought',
+    btn_add_low:'Add low stock items', btn_clear_done:'Clear bought',btn_share:'Share',
     stat_total:'Total items', stat_month:'This month', stat_low:'Low stock',
     filter_all:'All', filter_low:'\u26a0\ufe0f Low stock',
     badge_low:'Low stock', items_count:'items', bought_last:'Not bought last trip',
@@ -329,7 +330,33 @@ function recordBuy(){
   var id=parseInt(document.getElementById('buy-item-sel').value);
   var qty=parseInt(document.getElementById('buy-qty').value)||1;
   var price=parseFloat(document.getElementById('buy-price').value)||0;
-  var date=document.getElementById('buy-date').value||new Date().toISOString().split('T')[0];
+  var date=
+function shareShoplist(){
+  if(!shoplist.length) return;
+  var pending=shoplist.filter(function(x){return !x.done;});
+  var done=shoplist.filter(function(x){return x.done;});
+  var lines=[];
+  var isEN=curLang==='en';
+  lines.push(isEN ? '\U0001F6D2 Shopping List' : '\U0001F6D2 \u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d\u0e02\u0e2d\u0e07');
+  pending.forEach(function(s){lines.push('\u25a1 '+s.name+' x'+s.qty+' '+s.unit);});
+  if(done.length){
+    lines.push('');
+    lines.push(isEN ? '\u2705 Done' : '\u2705 \u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27');
+    done.forEach(function(s){lines.push('\u2611 '+s.name+' x'+s.qty+' '+s.unit);});
+  }
+  var text=lines.join('\n');
+  if(navigator.share){
+    navigator.share({text:text}).catch(function(){});
+  } else {
+    navigator.clipboard.writeText(text).then(function(){
+      var btn=document.getElementById('share-btn');
+      var orig=btn.innerHTML;
+      btn.innerHTML='&#10003; \u0e04\u0e31\u0e14\u0e25\u0e2d\u0e01!';
+      setTimeout(function(){btn.innerHTML=orig;},1500);
+    }).catch(function(){alert(text);});
+  }
+}
+document.getElementById('buy-date').value||new Date().toISOString().split('T')[0];
   var store=document.getElementById('buy-store').value;
   var note=document.getElementById('buy-note').value;
   var it=items.find(function(i){return i.id===id;});
