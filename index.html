@@ -21,7 +21,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
 .tabs{display:flex;background:var(--bg);border-bottom:.5px solid var(--border);padding:0 4px;position:sticky;top:calc(70px + env(safe-area-inset-top,0px));z-index:99}
 .tab{flex:1;padding:10px 4px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text2);border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;justify-content:center;gap:4px}
 .tab.active{color:var(--text);border-bottom-color:var(--text)}
-.content{padding:16px 16px 32px;max-width:600px;margin:0 auto;overflow:visible}
+.content{padding:16px 16px 32px;max-width:600px;margin:0 auto}
 .section{display:none}.section.active{display:block}
 .card{background:var(--bg);border-radius:var(--rl);padding:14px 16px;margin-bottom:12px;border:.5px solid var(--border)}
 .field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
@@ -89,15 +89,49 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
 .xpbi{height:100%;background:#1D9E75;border-radius:999px;transition:width .3s ease}
 .xsum{font-size:12px;color:var(--text2);margin-bottom:12px;display:flex;justify-content:space-between}
 
-.inv-layout{display:grid;grid-template-columns:170px 1fr;gap:12px;align-items:start;width:100%}
-.inv-left{position:sticky;top:calc(120px + env(safe-area-inset-top,0px))}
-.inv-right{}
-@media(max-width:768px){
-  .inv-layout{grid-template-columns:160px 1fr;gap:10px}
-  .inv-left{position:sticky;top:calc(120px + env(safe-area-inset-top,0px))}
-  .inv-left .field input,.inv-left .field select{font-size:13px;padding:6px 8px}
-  .inv-left .btn-p{font-size:13px;padding:8px 10px}
-  #tab-inventory{overflow-x:visible}
+.inv-v-layout{
+  display:flex;
+  flex-direction:column;
+  height:calc(100vh - 140px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
+}
+.inv-list-panel{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  margin-bottom:12px;
+}
+.inv-list-controls{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+  flex-shrink:0;
+}
+.sort-btn{
+  padding:5px 12px;
+  border-radius:999px;
+  font-size:12px;
+  cursor:pointer;
+  border:.5px solid var(--border2);
+  background:var(--bg);
+  color:var(--text2);
+  -webkit-appearance:none;
+  flex-shrink:0;
+}
+#filter-row{flex-shrink:0}
+.inv-list-scroll{
+  flex:1;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  min-height:0;
+}
+.inv-form-panel{
+  flex-shrink:0;
+  background:var(--bg);
+  border:.5px solid var(--border);
+  border-radius:var(--rl);
+  padding:14px 16px;
 }
 </style>
 </head>
@@ -117,30 +151,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
 </div>
 <div class="content">
   <div id="tab-inventory" class="section active">
-  <div class="inv-layout">
-    <!-- Left: Add Item Form -->
-    <div class="inv-left">
-      <div class="card" style="margin-bottom:0">
-        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:6px"><i class="ti ti-plus" style="font-size:14px"></i> <span data-i="btn_add_item"></span></div>
+  <div class="inv-v-layout">
+    <!-- TOP: Inventory List -->
+    <div class="inv-list-panel">
+      <div class="inv-list-controls">
+        <button id="sort-btn" onclick="toggleSort()" class="sort-btn" id="sort-btn-text">เรียงตามหมวด</button>
+      </div>
+      <div class="fr" id="filter-row"></div>
+      <div class="inv-list-scroll">
+        <div id="item-grid"></div>
+      </div>
+    </div>
+    <!-- BOTTOM: Add Item Form -->
+    <div class="inv-form-panel">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px" data-i="btn_add_item"></div>
+      <div class="r3">
         <div class="field"><label data-i="lbl_name"></label><input type="text" id="new-name" data-i-ph="ph_name"></div>
         <div class="field"><label data-i="lbl_cat"></label>
           <select id="new-cat" onchange="onCatChange(this)"></select>
         </div>
         <div class="field"><label data-i="lbl_unit"></label><input type="text" id="new-unit" data-i-ph="ph_unit"></div>
-        <div class="r2">
-          <div class="field"><label data-i="lbl_qty_init"></label><input type="number" id="new-qty" placeholder="0" min="0" inputmode="numeric"></div>
-          <div class="field"><label data-i="lbl_alert"></label><input type="number" id="new-min" placeholder="1" min="0" inputmode="numeric"></div>
-        </div>
-        <button type="button" class="btn btn-p" onclick="addItem()"><i class="ti ti-plus"></i> <span data-i="btn_add_item"></span></button>
       </div>
-    </div>
-    <!-- Right: Inventory List -->
-    <div class="inv-right">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-        <button id="sort-btn" onclick="toggleSort()" style="padding:5px 12px;border-radius:999px;font-size:12px;cursor:pointer;border:.5px solid var(--border2);background:var(--bg);color:var(--text2);-webkit-appearance:none" id="sort-btn-text">เรียงตามหมวด</button>
+      <div class="r2">
+        <div class="field"><label data-i="lbl_qty_init"></label><input type="number" id="new-qty" placeholder="0" min="0" inputmode="numeric"></div>
+        <div class="field"><label data-i="lbl_alert"></label><input type="number" id="new-min" placeholder="1" min="0" inputmode="numeric"></div>
       </div>
-      <div class="fr" id="filter-row"></div>
-      <div id="item-grid"></div>
+      <button type="button" class="btn btn-p" onclick="addItem()"><i class="ti ti-plus"></i> <span data-i="btn_add_item"></span></button>
     </div>
   </div>
 </div>
