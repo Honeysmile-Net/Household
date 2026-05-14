@@ -21,7 +21,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
 .tabs{display:flex;background:var(--bg);border-bottom:.5px solid var(--border);padding:0 4px;position:sticky;top:calc(70px + env(safe-area-inset-top,0px));z-index:99}
 .tab{flex:1;padding:10px 4px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text2);border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;justify-content:center;gap:4px}
 .tab.active{color:var(--text);border-bottom-color:var(--text)}
-.content{padding:16px 16px 32px;max-width:600px;margin:0 auto}
+.content{padding:16px 16px 32px;max-width:600px;margin:0 auto;overflow:visible}
 .section{display:none}.section.active{display:block}
 .card{background:var(--bg);border-radius:var(--rl);padding:14px 16px;margin-bottom:12px;border:.5px solid var(--border)}
 .field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
@@ -89,15 +89,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
 .xpbi{height:100%;background:#1D9E75;border-radius:999px;transition:width .3s ease}
 .xsum{font-size:12px;color:var(--text2);margin-bottom:12px;display:flex;justify-content:space-between}
 
-.inv-layout{display:grid;grid-template-columns:1fr 2fr;gap:16px;align-items:start}
+.inv-layout{display:grid;grid-template-columns:170px 1fr;gap:12px;align-items:start;width:100%}
 .inv-left{position:sticky;top:calc(120px + env(safe-area-inset-top,0px))}
 .inv-right{}
-@media(max-width:600px){
-  .inv-layout{grid-template-columns:180px 1fr;gap:10px;min-width:500px}
+@media(max-width:768px){
+  .inv-layout{grid-template-columns:160px 1fr;gap:10px}
   .inv-left{position:sticky;top:calc(120px + env(safe-area-inset-top,0px))}
-  #tab-inventory{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .inv-left .field input,.inv-left .field select{font-size:14px;padding:7px 8px}
+  .inv-left .field input,.inv-left .field select{font-size:13px;padding:6px 8px}
   .inv-left .btn-p{font-size:13px;padding:8px 10px}
+  #tab-inventory{overflow-x:visible}
 }
 </style>
 </head>
