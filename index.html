@@ -312,7 +312,7 @@ function delItem(id){items=items.filter(function(i){return i.id!==id;});save();r
 function addItem(){
   var n=document.getElementById('new-name').value.trim();
   if(!n)return;
-  items.push({id:Date.now(),name:n,cat:document.getElementById('new-cat').value,unit:document.getElementById('new-unit').value||'-',qty:parseInt(document.getElementById('new-qty').value)||0,min:parseInt(document.getElementById('new-min').value)||1});
+  items.push({id:Date.now(),name:n,cat:document.getElementById('new-cat').value,unit:document.getElementById('new-unit').value||'-',qty:parseInt(document.getElementById('new-qty').value)||0,min:(function(){var v=parseInt(document.getElementById('new-min').value);return isNaN(v)?1:v;})()});
   document.getElementById('new-name').value='';document.getElementById('new-qty').value='';document.getElementById('new-unit').value='';
   save();renderItems();updBuySel();updSlSel();
 }
