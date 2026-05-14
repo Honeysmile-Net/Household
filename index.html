@@ -630,11 +630,14 @@ function saveNewCat(){
   document.getElementById('new-cat').value=curLang==='th'?th:en;
 }
 function deleteCat(idx){
-  catList.splice(idx,1);
-  saveCats();
-  renderCatOptions();
-  renderFilterRow();
-  showManageCats();
+  var c=catList[idx];
+  if(!c) return;
+  var name=curLang==='th'?c.th:c.en;
+  var msg=curLang==='th'?'ลบหมวด “'+name+'”?':'Delete category “'+name+'”?';
+  showConfirm(msg,function(){
+    catList.splice(idx,1);
+    saveCats();renderCatOptions();renderFilterRow();showManageCats();
+  });
 }
 function showManageCats(){
   var el=document.getElementById('manage-cats-list');
@@ -692,7 +695,29 @@ function renderItems(){
 }
 
 function chgQty(id,d){var it=items.find(function(i){return i.id===id;});if(it){it.qty=Math.max(0,it.qty+d);save();renderItems();}}
-function delItem(id){items=items.filter(function(i){return i.id!==id;});save();renderItems();}
+function showConfirm(msg, cb){
+  var overlay=document.getElementById('confirm-overlay');
+  var msgEl=document.getElementById('confirm-msg');
+  var okBtn=document.getElementById('confirm-ok');
+  var cancelBtn=document.getElementById('confirm-cancel');
+  if(!overlay) return cb && cb();
+  msgEl.textContent=msg;
+  okBtn.textContent=curLang==='th'?'ลบ':'Delete';
+  cancelBtn.textContent=curLang==='th'?'ยกเลิก':'Cancel';
+  overlay.style.display='flex';
+  okBtn.onclick=function(){overlay.style.display='none';if(cb) cb();};
+  cancelBtn.onclick=function(){overlay.style.display='none';};
+}
+function delItem(id){
+  id=parseInt(id)||id;
+  var it=items.find(function(i){return i.id===id;});
+  if(!it) return;
+  var msg=curLang==='th'?'ลบ “'+it.name+'” ออกจากคลัง?':'Delete “'+it.name+'”?';
+  showConfirm(msg,function(){
+    items=items.filter(function(i){return i.id!==id;});
+    save();renderItems();
+  });
+}
 function addItem(){
   var n=document.getElementById('new-name').value.trim();
   if(!n)return;
@@ -754,8 +779,11 @@ function shareShoplist(){
 }
 
 function deleteLog(id){
-  logs=logs.filter(function(l){return l.id!==id;});
-  save();renderHistory();
+  var msg=curLang==='th'?'ลบประวัติการซื้อนี้?':'Delete this record?';
+  showConfirm(msg,function(){
+    logs=logs.filter(function(l){return l.id!==id;});
+    save();renderHistory();
+  });
 }
 function fmtDate(d){
   if(!d) return '-';
@@ -1002,6 +1030,15 @@ document.addEventListener('click',function(e){
       <div style="margin-top:12px">
         <button type="button" class="btn" style="width:100%" onclick="closeAddCat()"><span data-i="btn_cancel"></span></button>
       </div>
+    </div>
+  </div>
+</div>
+<div id="confirm-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:2000;align-items:center;justify-content:center;padding:20px">
+  <div style="background:linear-gradient(160deg,#f0faf7,#e8f4fd);border-radius:var(--rl);padding:22px 20px;width:100%;max-width:320px;border:.5px solid rgba(61,184,154,.25);box-shadow:0 8px 32px rgba(0,0,0,.15)">
+    <div id="confirm-msg" style="font-size:15px;color:var(--text);margin-bottom:20px;text-align:center;line-height:1.5;font-weight:500"></div>
+    <div style="display:flex;gap:10px">
+      <button type="button" id="confirm-cancel" class="btn" style="flex:1;justify-content:center"></button>
+      <button type="button" id="confirm-ok" style="flex:1;padding:10px;border-radius:var(--r);border:none;background:#e05a5a;color:#fff;font-size:15px;font-weight:600;cursor:pointer"></button>
     </div>
   </div>
 </div>
