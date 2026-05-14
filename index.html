@@ -345,17 +345,17 @@ function recordBuy(){
   setTimeout(function(){btn.innerHTML='<i class="ti ti-shopping-cart"></i> '+t('btn_record');},1500);
 }
 function shareShoplist(){
-  if(!shoplist.length) return;
+  if(!shoplist.length){alert(t('no_shoplist'));return;}
   var pending=shoplist.filter(function(x){return !x.done;});
   var done=shoplist.filter(function(x){return x.done;});
   var lines=[];
   var isEN=curLang==='en';
-  lines.push(isEN ? '\U0001F6D2 Shopping List' : '\U0001F6D2 \u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d\u0e02\u0e2d\u0e07');
-  pending.forEach(function(s){lines.push('\u25a1 '+s.name+' x'+s.qty+' '+s.unit);});
+  lines.push(isEN ? '🛒 Shopping List' : '🛒 รายการซื้อของ');
+  pending.forEach(function(s){lines.push('□ '+s.name+' x'+s.qty+' '+s.unit);});
   if(done.length){
     lines.push('');
-    lines.push(isEN ? '\u2705 Done' : '\u2705 \u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27');
-    done.forEach(function(s){lines.push('\u2611 '+s.name+' x'+s.qty+' '+s.unit);});
+    lines.push(isEN ? '✅ Done' : '✅ ซื้อแล้ว');
+    done.forEach(function(s){lines.push('☑ '+s.name+' x'+s.qty+' '+s.unit);});
   }
   var text=lines.join('\n');
   if(navigator.share){
@@ -364,7 +364,7 @@ function shareShoplist(){
     navigator.clipboard.writeText(text).then(function(){
       var btn=document.getElementById('share-btn');
       var orig=btn.innerHTML;
-      btn.innerHTML='&#10003; \u0e04\u0e31\u0e14\u0e25\u0e2d\u0e01!';
+      btn.innerHTML='✓ คัดลอก!';
       setTimeout(function(){btn.innerHTML=orig;},1500);
     }).catch(function(){alert(text);});
   }
