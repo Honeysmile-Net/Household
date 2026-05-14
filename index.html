@@ -208,7 +208,7 @@ var I18N={
     badge_low:'Low stock', items_count:'items', bought_last:'Not bought last trip',
     never_bought:'Never purchased', no_history:'No history', no_items:'No items found',
     no_logs:'No purchase history', no_shoplist:'No items in list',
-    no_low:'No low stock items',
+    no_low:'No low stock items',lbl_edit_title:'Edit item',btn_cancel:'Cancel',btn_save:'Save',
     sl_count:'Bought',
     cats:['Seasoning','Household','Fresh food','Vegetables','Dry goods','Cleaning','Milk','Drinks']
   }
@@ -293,7 +293,8 @@ function renderItems(){
   g.innerHTML=fl.map(function(it){
     var low=it.qty<=it.min;
     return '<div class="ic'+(low?' low':'')+'">'+
-      '<button class="dbtn" onclick="delItem('+it.id+')"><i class="ti ti-x"></i></button>'+
+      '<button class="dbtn" style="right:32px" onclick="editItem('+it.id+')">&#9998;</button>'+
+      '<button class="dbtn" onclick="delItem('+it.id+')">&#10005;</button>'+
       '<div class="ii">'+emoji(it.cat)+'</div>'+
       '<div class="in">'+it.name+'</div>'+
       '<div class="icat">'+it.cat+'</div>'+
@@ -446,10 +447,34 @@ function renderSL(){
       '<button class="xck'+(s.done?' checked':'')+'" onclick="togSL('+s.id+')">'+(s.done?'<i class="ti ti-check"></i>':'')+'</button>'+
       '<span class="xln">'+emoji(s.cat)+' '+s.name+'</span>'+
       '<span class="xq">'+s.qty+' '+s.unit+'</span>'+
-      '<button class="xdl" onclick="delSL('+s.id+')"><i class="ti ti-x"></i></button>'+
+      '<button class="xdl" onclick="delSL('+s.id+')">&#10005;</button>'+
     '</div>';
   });
   el.innerHTML=h;
+}
+
+function editItem(id){
+  var it=items.find(function(i){return i.id===id;});
+  if(!it)return;
+  document.getElementById('edit-id').value=id;
+  document.getElementById('edit-name').value=it.name;
+  document.getElementById('edit-unit').value=it.unit;
+  document.getElementById('edit-min').value=it.min;
+  var catSel=document.getElementById('edit-cat');
+  var cats=I18N[curLang].cats;
+  catSel.innerHTML=cats.map(function(c){return '<option'+(c===it.cat?' selected':'')+'>'+c+'</option>';}).join('');
+  document.getElementById('edit-modal').style.display='flex';
+}
+function closeEdit(){document.getElementById('edit-modal').style.display='none';}
+function saveEdit(){
+  var id=parseInt(document.getElementById('edit-id').value);
+  var it=items.find(function(i){return i.id===id;});
+  if(!it)return;
+  it.name=document.getElementById('edit-name').value.trim()||it.name;
+  it.cat=document.getElementById('edit-cat').value;
+  it.unit=document.getElementById('edit-unit').value.trim()||it.unit;
+  it.min=(function(){var v=parseInt(document.getElementById('edit-min').value);return isNaN(v)?it.min:v;})();
+  save();renderItems();updBuySel();updSlSel();closeEdit();
 }
 document.getElementById('buy-date').value=new Date().toISOString().split('T')[0];
 applyLang();
@@ -458,5 +483,22 @@ updBuySel();
 updSlSel();
 renderSL();
 </script>
+
+<div id="edit-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--bg);border-radius:var(--rl);padding:20px;width:100%;max-width:360px;border:.5px solid var(--border)">
+    <div style="font-size:17px;font-weight:600;margin-bottom:16px;color:var(--text)" data-i="lbl_edit_title"></div>
+    <input type="hidden" id="edit-id">
+    <div class="field"><label data-i="lbl_name"></label><input type="text" id="edit-name"></div>
+    <div class="field"><label data-i="lbl_cat"></label><select id="edit-cat"></select></div>
+    <div class="r2">
+      <div class="field"><label data-i="lbl_unit"></label><input type="text" id="edit-unit"></div>
+      <div class="field"><label data-i="lbl_alert"></label><input type="number" id="edit-min" min="0" inputmode="numeric"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn" style="flex:1" onclick="closeEdit()" id="btn-cancel-edit">ยกเลิก</button>
+      <button class="btn btn-p" style="flex:2" onclick="saveEdit()" id="btn-save-edit">บันทึก</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
