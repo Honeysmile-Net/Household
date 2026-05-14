@@ -134,10 +134,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
   padding:14px 16px;
 }
 
-.filter-dropdown{position:relative;flex:1;min-width:0}
-.filter-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;font-size:12px;cursor:pointer;border:.5px solid var(--border2);background:var(--bg);color:var(--text2);-webkit-appearance:none;width:100%;min-width:0}
-.filter-menu{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--bg);border:.5px solid var(--border2);border-radius:var(--r);z-index:50;max-height:220px;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 4px 16px rgba(0,0,0,.12)}
-.filter-opt{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;font-size:14px;color:var(--text);border-bottom:.5px solid var(--border)}
+
+
+
+
 .filter-opt:last-child{border-bottom:none}
 .filter-opt input[type=checkbox]{width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:var(--text)}
 
@@ -227,12 +227,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
   </div>
   <div id="tab-history" class="section"><div id="history-view"></div></div>
   <div id="tab-shoplist" class="section">
-    <div class="card">
-      <div style="display:flex;gap:8px;align-items:flex-end">
-        <div class="field" style="flex:1;margin-bottom:0"><label data-i="lbl_add_item"></label><select id="sl-item-sel"></select></div>
-        <div class="field" style="width:72px;margin-bottom:0"><label data-i="lbl_qty_buy"></label><input type="number" id="sl-qty" value="1" min="1" inputmode="numeric"></div>
-        <button class="btn" style="height:42px;padding:0 14px;flex-shrink:0;align-self:flex-end" onclick="addToShopList()"><i class="ti ti-plus"></i></button>
- 
+  <div class="card">
+    <div style="display:flex;gap:8px;align-items:flex-end">
+      <div class="field" style="flex:1;margin-bottom:0"><label data-i="lbl_add_item"></label><select id="sl-item-sel"></select></div>
+      <div class="field" style="width:72px;margin-bottom:0"><label data-i="lbl_qty_buy"></label><input type="number" id="sl-qty" value="1" min="1" inputmode="numeric"></div>
+      <button type="button" class="btn" style="height:42px;padding:0 14px;flex-shrink:0;align-self:flex-end" onclick="addToShopList()"><i class="ti ti-plus"></i></button>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <button type="button" class="btn btn-sm" onclick="addLowStock()"><i class="ti ti-alert-triangle" style="font-size:13px"></i> <span data-i="btn_add_low"></span></button>
+      <button type="button" class="btn btn-sm btn-p" id="share-btn" onclick="shareShoplist()" style="margin-left:auto">&#128279; <span data-i="btn_share"></span></button>
+      <button type="button" class="btn btn-sm" onclick="clearDone()" style="color:#A32D2D;border-color:#E24B4A"><i class="ti ti-trash" style="font-size:13px"></i> <span data-i="btn_clear_done"></span></button>
+    </div>
+  </div>
+  <div id="shoplist-view"></div>
+</div>
+
 <script>
 var IK='hh4_items',LK='hh4_logs',SK='hh4_shoplist',LANGK='hh4_lang';
 var items=[],logs=[],shoplist=[],curLang='th';
@@ -417,17 +426,7 @@ function switchTab(tab){
   document.getElementById('tab-'+tab).classList.add('active');
   if(tab==='buy'){updBuySel();updStats();}
   if(tab==='history'){renderHistory();}
-  if(tab==='shoplist'){updSlSel();renderSL();
-document.addEventListener('click',function(e){
-  var dd=document.getElementById('filter-dropdown-menu');
-  var btn=document.getElementById('filter-dropdown-btn');
-  if(dd&&btn&&!dd.contains(e.target)&&!btn.contains(e.target)){
-    dd.style.display='none';
-    var chev=document.getElementById('filter-chev');
-    if(chev) chev.style.transform='';
-  }
-});
-}
+  if(tab==='shoplist'){updSlSel();renderSL();}
 }
 
 function setFilter(f,btn){selectedFilters=[f];renderFilterDropdown();renderItems();}
@@ -707,58 +706,11 @@ function saveEdit(){
   it.min=(function(){var v=parseInt(document.getElementById('edit-min').value);return isNaN(v)?it.min:v;})();
   save();renderItems();updBuySel();updSlSel();closeEdit();
 }
-function renderFilterDropdown(){
-  var cats=allCats(curLang);
-  var isEN=curLang==='en';
-  var allLabel=isEN?'All':'ทั้งหมด';
-  var lowLabel=isEN?'⚠️ Low stock':'⚠️ ใกล้หมด';
-  var opts=[{v:'all',l:allLabel},{v:'low',l:lowLabel}];
-  cats.forEach(function(c){opts.push({v:c,l:c});});
-  var menu=document.getElementById('filter-dropdown-menu');
-  if(!menu) return;
-  menu.innerHTML=opts.map(function(o){
-    var chk=selectedFilters.indexOf(o.v)>=0;
-    return '<label class="filter-opt"><input type="checkbox" value="'+o.v+'" '+(chk?'checked':'')+' onchange="toggleFilterOption(this.value,this.checked)"><span>'+o.l+'</span></label>';
-  }).join('');
-  updateFilterSummary();
-}
-function updateFilterSummary(){
-  var isEN=curLang==='en';
-  var el=document.getElementById('filter-summary');
-  if(!el) return;
-  if(selectedFilters.indexOf('all')>=0){
-    el.textContent=isEN?'All':'ทั้งหมด';
-  } else if(selectedFilters.length===1&&selectedFilters[0]==='low'){
-    el.textContent=isEN?'Low stock':'ใกล้หมด';
-  } else if(selectedFilters.length===1){
-    el.textContent=selectedFilters[0];
-  } else {
-    el.textContent=selectedFilters.length+(isEN?' categories':' หมวด');
-  }
-}
-function toggleFilterOption(val,checked){
-  if(val==='all'){
-    selectedFilters=checked?['all']:[];
-  } else {
-    var ai=selectedFilters.indexOf('all');
-    if(ai>=0) selectedFilters.splice(ai,1);
-    var i=selectedFilters.indexOf(val);
-    if(checked&&i<0) selectedFilters.push(val);
-    if(!checked&&i>=0) selectedFilters.splice(i,1);
-    if(selectedFilters.length===0) selectedFilters=['all'];
-  }
-  renderFilterDropdown();
-  renderItems();
-}
-function toggleFilterDropdown(){
-  var menu=document.getElementById('filter-dropdown-menu');
-  var chev=document.getElementById('filter-chev');
-  var open=menu.style.display==='none';
-  menu.style.display=open?'block':'none';
-  if(chev) chev.style.transform=open?'rotate(180deg)':'';
-  if(open) renderFilterDropdown();
-}
-function renderFilterRow(){renderFilterDropdown();}
+
+
+
+
+
 document.getElementById('buy-date').value=new Date().toISOString().split('T')[0];
 applyLang();
 updStats();
@@ -766,22 +718,22 @@ updBuySel();
 updSlSel();
 renderSL();
 
-function saveEdit(){
-  var id=parseInt(document.getElementById('edit-id').value);
-  var it=items.find(function(i){return i.id===id;});
-  if(!it)return;
-  it.name=document.getElementById('edit-name').value.trim()||it.name;
-  it.cat=document.getElementById('edit-cat').value;
-  it.unit=document.getElementById('edit-unit').value.trim()||it.unit;
-  it.min=(function(){var v=parseInt(document.getElementById('edit-min').value);return isNaN(v)?it.min:v;})();
-  save();renderItems();updBuySel();updSlSel();closeEdit();
-}
+
 document.getElementById('buy-date').value=new Date().toISOString().split('T')[0];
 applyLang();
 updStats();
 updBuySel();
 updSlSel();
 renderSL();
+document.addEventListener('click',function(e){
+  var dd=document.getElementById('filter-dropdown-menu');
+  var btn=document.getElementById('filter-dropdown-btn');
+  if(dd&&btn&&!dd.contains(e.target)&&!btn.contains(e.target)){
+    dd.style.display='none';
+    var chev=document.getElementById('filter-chev');
+    if(chev) chev.style.transform='';
+  }
+});
 </script>
 
 <div id="edit-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;padding:20px">
