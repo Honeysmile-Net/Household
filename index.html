@@ -741,14 +741,6 @@ updStats();
 updBuySel();
 updSlSel();
 renderSL();
-
-
-document.getElementById('buy-date').value=new Date().toISOString().split('T')[0];
-applyLang();
-updStats();
-updBuySel();
-updSlSel();
-renderSL();
 document.addEventListener('click',function(e){
   var dd=document.getElementById('filter-dropdown-menu');
   var btn=document.getElementById('filter-dropdown-btn');
