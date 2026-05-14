@@ -114,9 +114,9 @@ padding:5px 12px;
 border-radius:999px;
 font-size:12px;
 cursor:pointer;
-border:.5px solid var(–border2);
-background:var(–bg);
-color:var(–text2);
+border:.5px solid var(--border2);
+background:var(--bg);
+color:var(--text2);
 -webkit-appearance:none;
 flex-shrink:0;
 }
@@ -127,33 +127,27 @@ overflow-y:auto;
 -webkit-overflow-scrolling:touch;
 min-height:0;
 }
-.inv-form-panel{
-flex-shrink:0;
-background:var(–bg);
-border:.5px solid var(–border);
-border-radius:var(–rl);
-padding:14px 16px;
-}
 
-.filter-opt:last-child{border-bottom:none}
-.filter-opt input[type=checkbox]{width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:var(–text)}
+
+
+
 
 .filter-dropdown{position:relative;flex:1;min-width:0}
-.filter-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;font-size:12px;cursor:pointer;border:.5px solid rgba(61,184,154,.4);background:rgba(255,255,255,.8);color:var(–text2);-webkit-appearance:none;width:100%;min-width:0;text-align:left;backdrop-filter:blur(4px)}
-.filter-menu{position:absolute;top:calc(100% + 4px);left:0;right:0;background:rgba(255,255,255,.96);border:.5px solid rgba(61,184,154,.25);border-radius:var(–r);z-index:200;max-height:220px;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 4px 20px rgba(61,184,154,.15);backdrop-filter:blur(12px)}
-.filter-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;font-size:14px;color:var(–text);border-bottom:.5px solid var(–border)}
+.filter-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;font-size:12px;cursor:pointer;border:.5px solid rgba(61,184,154,.4);background:rgba(255,255,255,.8);color:var(--text2);-webkit-appearance:none;width:100%;min-width:0;text-align:left;backdrop-filter:blur(4px)}
+.filter-menu{position:absolute;top:calc(100% + 4px);left:0;right:0;background:rgba(255,255,255,.96);border:.5px solid rgba(61,184,154,.25);border-radius:var(--r);z-index:200;max-height:220px;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 4px 20px rgba(61,184,154,.15);backdrop-filter:blur(12px)}
+.filter-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;font-size:14px;color:var(--text);border-bottom:.5px solid var(--border)}
 .filter-opt:last-child{border-bottom:none}
-.filter-opt input[type=checkbox]{width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:var(–text)}
+.filter-opt input[type=checkbox]{width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:var(--text)}
 
-.inv-form-panel{flex-shrink:0;background:linear-gradient(160deg,rgba(255,255,255,.9) 0%,rgba(235,248,255,.9) 100%);border:.5px solid rgba(91,191,232,.25);border-radius:var(–rl);padding:12px 14px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(91,191,232,.08)}
+.inv-form-panel{flex-shrink:0;background:linear-gradient(160deg,rgba(255,255,255,.9) 0%,rgba(235,248,255,.9) 100%);border:.5px solid rgba(91,191,232,.25);border-radius:var(--rl);padding:12px 14px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(91,191,232,.08)}
 .form-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:8px}
-.form-title{font-size:13px;font-weight:600;color:var(–text)}
-.form-subtitle{font-size:11px;color:var(–text2);margin-top:2px;line-height:1.4}
-.btn-clear-form{background:none;border:.5px solid var(–border2);border-radius:var(–r);padding:4px 10px;font-size:12px;color:var(–text2);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.form-title{font-size:13px;font-weight:600;color:var(--text)}
+.form-subtitle{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.4}
+.btn-clear-form{background:none;border:.5px solid var(--border2);border-radius:var(--r);padding:4px 10px;font-size:12px;color:var(--text2);cursor:pointer;white-space:nowrap;flex-shrink:0}
 .btn-clear-form:active{opacity:.7}
 .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .unit-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
-.chip{padding:3px 8px;border-radius:999px;font-size:11px;border:.5px solid rgba(61,184,154,.35);background:rgba(224,248,240,.6);color:var(–text2);cursor:pointer;-webkit-appearance:none}
+.chip{padding:3px 8px;border-radius:999px;font-size:11px;border:.5px solid rgba(61,184,154,.35);background:rgba(224,248,240,.6);color:var(--text2);cursor:pointer;-webkit-appearance:none}
 .chip-active{background:linear-gradient(135deg,#3db89a,#2da888);color:#fff;border-color:transparent;box-shadow:0 1px 5px rgba(61,184,154,.35)}
 .chip:active{opacity:.7}
 .inv-form-panel .field{margin-bottom:7px}
@@ -305,7 +299,7 @@ var I18N={
     never_bought:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e40\u0e04\u0e22\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_history:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34', no_items:'\u0e44\u0e21\u0e48\u0e1e\u0e1a\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32',
     no_logs:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_shoplist:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23',
     no_low:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e02\u0e2d\u0e07\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14\u0e43\u0e19\u0e02\u0e13\u0e30\u0e19\u0e35\u0e49',
-    sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',btn_sort_cat:'เรียงตามหมวดหมู่',btn_share:'แชร์',lbl_edit_title:'แก้ไขสินค้า',btn_cancel:'ยกเลิก',btn_save:'บันทึก',opt_add_cat:'+ เพิ่มหมวดใหม่...',btn_add_stock:'เพิ่มเข้าคลัง',add_form_title:'เพิ่มสินค้าใหม่',add_form_subtitle:'กรอกข้อมูลของใช้ที่ต้องการติดตามในคลัง',btn_clear_form:'ล้างข้อมูล',unit_chips:['ขวด','ก้อน','ถุง','แพ็ค','กล่อง','ชิ้น'],
+    sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',btn_sort_cat:'เรียงตามหมวดหมู่',btn_sort_cat_active:'กำลังเรียงตามหมวดหมู่',btn_share:'แชร์',lbl_edit_title:'แก้ไขสินค้า',btn_cancel:'ยกเลิก',btn_save:'บันทึก',opt_add_cat:'+ เพิ่มหมวดใหม่...',btn_add_stock:'เพิ่มเข้าคลัง',add_form_title:'เพิ่มสินค้าใหม่',add_form_subtitle:'กรอกข้อมูลของใช้ที่ต้องการติดตามในคลัง',btn_clear_form:'ล้างข้อมูล',unit_chips:['ขวด','ก้อน','ถุง','แพ็ค','กล่อง','ชิ้น'],
     cats:['เครื่องปรุง','ของใช้','อาหารสด','ผัก','ของแห้ง','ทำความสะอาด','นม','เครื่องดื่ม']
   },
   en:{
@@ -317,7 +311,7 @@ var I18N={
     lbl_date:'Date', lbl_store:'Store', lbl_note:'Note', lbl_add_item:'Add item',
     ph_name:'e.g. Cooking oil', ph_unit:'bottle/bar', ph_store:'e.g. Tesco', ph_note:'Optional...',
     btn_add_item:'Add item', btn_record:'Record purchase', btn_recorded:'Saved!',
-    btn_add_low:'Add low stock items', btn_clear_done:'Clear bought',btn_share:'Share',btn_sort_cat:'Sort by category',
+    btn_add_low:'Add low stock items', btn_clear_done:'Clear bought',btn_share:'Share',btn_sort_cat:'Sort by category',btn_sort_cat_active:'Sorted by category',
     stat_total:'Total items', stat_month:'This month', stat_low:'Low stock',
     filter_all:'All', filter_low:'\u26a0\ufe0f Low stock',
     badge_low:'Low stock', items_count:'items', bought_last:'Not bought last trip',
@@ -441,8 +435,7 @@ function applyLang(){
   renderItems();
   updBuySel();
   updSlSel();
-  var sl=document.getElementById('sort-btn-label');
-  if(sl) sl.textContent=t('btn_sort_cat');
+  updateSortButton();
   renderFilterDropdown();
 }
 
@@ -643,13 +636,17 @@ function showManageCats(){
     '</div>';
   }).join('');
 }
+function updateSortButton(){
+  var btn=document.getElementById('sort-btn');
+  var label=document.getElementById('sort-btn-label');
+  if(!btn||!label) return;
+  label.textContent=sortByCat?t('btn_sort_cat_active'):t('btn_sort_cat');
+  btn.style.background=sortByCat?'var(--text)':'var(--bg)';
+  btn.style.color=sortByCat?'var(--bg)':'var(--text2)';
+}
 function toggleSort(){
   sortByCat=!sortByCat;
-  var btn=document.getElementById('sort-btn');
-  if(btn){
-    btn.style.background=sortByCat?'var(--text)':'var(--bg)';
-    btn.style.color=sortByCat?'var(--bg)':'var(--text2)';
-  }
+  updateSortButton();
   renderItems();
 }
 function renderItems(){
