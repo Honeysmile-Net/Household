@@ -903,12 +903,15 @@ function renderUnitChips(){
     return '<button type="button" class="chip'+(active?' chip-active':'')+'" onclick="'+onclick+'">'+c+'</button>';
   }).join('');
 }
-document.getElementById('buy-date').value=new Date().toISOString().split('T')[0];
-applyLang();
-updStats();
-updBuySel();
-updSlSel();
-renderSL();
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('buy-date').value=new Date().toISOString().split('T')[0];
+  applyLang();
+  updStats();
+  updBuySel();
+  updSlSel();
+  renderSL();
+});
+// click listener moved to DOMContentLoaded above
 document.addEventListener('click',function(e){
   var dd=document.getElementById('filter-dropdown-menu');
   var btn=document.getElementById('filter-dropdown-btn');
