@@ -110,7 +110,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
       <div class="r3">
         <div class="field"><label data-i="lbl_name"></label><input type="text" id="new-name" data-i-ph="ph_name"></div>
         <div class="field"><label data-i="lbl_cat"></label>
-          <select id="new-cat"></select>
+          <select id="new-cat" onchange="onCatChange(this)"></select>
         </div>
         <div class="field"><label data-i="lbl_unit"></label><input type="text" id="new-unit" data-i-ph="ph_unit"></div>
       </div>
@@ -223,6 +223,19 @@ var I18N={
 var CAT_EMOJI={'\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07':'\ud83e\uddc2','\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49':'\ud83e\uddf4','\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e2a\u0e14':'\ud83c\udf57','\u0e1c\u0e31\u0e01':'\ud83e\udd66','\u0e02\u0e2d\u0e07\u0e41\u0e2b\u0e49\u0e07':'\ud83e\udd6b','\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e30\u0e2d\u0e32\u0e14':'\ud83e\uddf9','Seasoning':'\ud83e\uddc2','Household':'\ud83e\uddf4','Fresh food':'\ud83c\udf57','Vegetables':'\ud83e\udd66','Dry goods':'\ud83e\udd6b','Cleaning':'\ud83e\uddf9','\u0e19\u0e21':'\ud83e\udd5b','\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e14\u0e37\u0e48\u0e21':'\ud83e\udd64','Milk':'\ud83e\udd5b','Drinks':'\ud83e\udd64'};
 var CF='all';
 var sortByCat=false;
+var CATS_KEY='hh4_cats';
+var catList=[];
+try{catList=JSON.parse(localStorage.getItem(CATS_KEY)||'[]');}catch(e){}
+if(!catList.length){
+  var dth=I18N.th.cats, den=I18N.en.cats;
+  catList=dth.map(function(c,i){return {th:c,en:den[i]||c};});
+  try{localStorage.setItem(CATS_KEY,JSON.stringify(catList));}catch(e){}
+}
+function allCats(lang){
+  return catList.map(function(c){return lang==='th'?c.th:c.en;});
+}
+function saveCats(){try{localStorage.setItem(CATS_KEY,JSON.stringify(catList));}catch(e){}}
+
 
 if(!items.length){
   items=[
@@ -257,7 +270,7 @@ function toggleLang(){
 }
 
 function renderFilterRow(){
-  var cats=I18N[curLang].cats;
+  var cats=allCats(curLang);
   var html='<button class="pill'+(CF==='all'?' active':'')+'" onclick="setFilter(\'all\',this)">'+t('filter_all')+'</button>';
   cats.forEach(function(c){
     html+='<button class="pill'+(CF===c?' active':'')+'" onclick="setFilter(\''+c+'\',this)">'+c+'</button>';
@@ -267,8 +280,11 @@ function renderFilterRow(){
 }
 
 function renderCatOptions(){
-  var cats=I18N[curLang].cats;
-  document.getElementById('new-cat').innerHTML=cats.map(function(c){return '<option>'+c+'</option>';}).join('');
+  var cats=allCats(curLang);
+  var html=cats.map(function(c){return '<option>'+c+'</option>';}).join('');
+  html+='<option value="__add__" id="opt-add-cat">+ เพิ่มหมวดใหม่...</option>';
+  document.getElementById('new-cat').innerHTML=html;
+  document.getElementById('new-cat').value=cats[0]||'';
 }
 
 function save(){try{localStorage.setItem(IK,JSON.stringify(items));localStorage.setItem(LK,JSON.stringify(logs));}catch(e){}}
@@ -291,6 +307,44 @@ function setFilter(f,btn){
   renderItems();
 }
 
+function onCatChange(sel){
+  if(sel.value==='__add__'){
+    document.getElementById('add-cat-modal').style.display='flex';
+    showManageCats();
+    sel.value=allCats(curLang)[0]||'';
+  }
+}
+function closeAddCat(){document.getElementById('add-cat-modal').style.display='none';}
+function saveNewCat(){
+  var th=document.getElementById('new-cat-th').value.trim();
+  var en=document.getElementById('new-cat-en').value.trim();
+  if(!th||!en){alert('กรุณาใส่ชื่อทั้งภาษาไทยและอังกฤษ');return;}
+  catList.push({th:th,en:en});
+  saveCats();
+  document.getElementById('new-cat-th').value='';
+  document.getElementById('new-cat-en').value='';
+  closeAddCat();
+  renderCatOptions();
+  renderFilterRow();
+  document.getElementById('new-cat').value=curLang==='th'?th:en;
+}
+function deleteCat(idx){
+  catList.splice(idx,1);
+  saveCats();
+  renderCatOptions();
+  renderFilterRow();
+  showManageCats();
+}
+function showManageCats(){
+  var el=document.getElementById('manage-cats-list');
+  if(!catList.length){el.innerHTML='<div style="color:var(--text2);font-size:13px;padding:8px 0">ไม่มีหมวดหมู่</div>';return;}
+  el.innerHTML=catList.map(function(c,i){
+    return '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:.5px solid var(--border)">'+
+      '<span style="flex:1;font-size:14px;color:var(--text)">'+c.th+' / '+c.en+'</span>'+
+      '<button onclick="deleteCat('+i+')" style="background:none;border:none;color:#E24B4A;cursor:pointer;font-size:16px;padding:2px 6px">&#10005;</button>'+
+    '</div>';
+  }).join('');
+}
 function toggleSort(){
   sortByCat=!sortByCat;
   var btn=document.getElementById('sort-btn');
@@ -502,7 +556,7 @@ function editItem(id){
   document.getElementById('edit-unit').value=it.unit;
   document.getElementById('edit-min').value=it.min;
   var catSel=document.getElementById('edit-cat');
-  var cats=I18N[curLang].cats;
+  var cats=allCats(curLang);
   catSel.innerHTML=cats.map(function(c){return '<option'+(c===it.cat?' selected':'')+'>'+c+'</option>';}).join('');
   document.getElementById('edit-modal').style.display='flex';
 }
@@ -536,8 +590,22 @@ renderSL();
       <div class="field"><label data-i="lbl_alert"></label><input type="number" id="edit-min" min="0" inputmode="numeric"></div>
     </div>
     <div style="display:flex;gap:8px;margin-top:4px">
-      <button class="btn" style="flex:1" onclick="closeEdit()" id="btn-cancel-edit">ยกเลิก</button>
-      <button class="btn btn-p" style="flex:2" onclick="saveEdit()" id="btn-save-edit">บันทึก</button>
+      <button type="button" class="btn" style="flex:1" onclick="closeEdit()" id="btn-cancel-edit">ยกเลิก</button>
+      <button type="button" class="btn btn-p" style="flex:2" onclick="saveEdit()" id="btn-save-edit">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<div id="add-cat-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--bg);border-radius:var(--rl);padding:20px;width:100%;max-width:360px;border:.5px solid var(--border)">
+    <div style="font-size:17px;font-weight:600;margin-bottom:4px;color:var(--text)">จัดการหมวดหมู่</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:12px">เพิ่มหรือลบหมวดได้อิสระ</div>
+    <div id="manage-cats-list" style="margin-bottom:12px"></div>
+    <div class="field"><label>ชื่อภาษาไทย</label><input type="text" id="new-cat-th" placeholder="เช่น เบเกอรี่"></div>
+    <div class="field"><label>English name</label><input type="text" id="new-cat-en" placeholder="e.g. Bakery"></div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button type="button" class="btn" style="flex:1" onclick="closeAddCat()">ยกเลิก</button>
+      <button type="button" class="btn btn-p" style="flex:2" onclick="saveNewCat()">บันทึก</button>
     </div>
   </div>
 </div>
