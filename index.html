@@ -161,7 +161,7 @@ min-height:0;
 .cat-tab-btn{transition:color .15s,border-bottom-color .15s}
 
 #form-body{overflow:hidden;transition:none}
-.inv-form-panel .form-header:hover{opacity:.9}
+.inv-form-panel .form-header:hover{opacity:.95}
 </style>
 
 </head>
@@ -204,15 +204,15 @@ min-height:0;
     </div>
     <!-- BOTTOM: Add Item Form -->
     <div class="inv-form-panel">
-      <div class="form-header" onclick="toggleForm()" style="cursor:pointer;user-select:none;-webkit-user-select:none">
-        <div style="flex:1">
+      <div class="form-header">
+        <div style="flex:1;cursor:pointer;-webkit-tap-highlight-color:transparent" onclick="toggleForm()">
           <div class="form-title"><i class="ti ti-plus" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i><span data-i="add_form_title"></span></div>
-          <div class="form-subtitle" data-i="add_form_subtitle" id="form-subtitle-text"></div>
+          <div class="form-subtitle" data-i="add_form_subtitle"></div>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
-          <button type="button" class="btn-clear-form" onclick="event.stopPropagation();clearForm()" data-i="btn_clear_form" id="form-clear-btn"></button>
-          <button type="button" id="form-toggle-btn" onclick="event.stopPropagation();toggleForm()" style="background:none;border:none;cursor:pointer;padding:4px;color:var(--text2)" title="">
-            <span id="form-toggle-icon" style="font-size:12px;transition:transform .25s;display:inline-block;line-height:1">&#9650;</span>
+          <button type="button" class="btn-clear-form" onclick="clearForm()" data-i="btn_clear_form" id="form-clear-btn"></button>
+          <button type="button" onclick="toggleForm()" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--text2);-webkit-tap-highlight-color:transparent;min-width:32px;min-height:32px">
+            <span id="form-toggle-icon" style="font-size:13px;display:inline-block;line-height:1">&#9650;</span>
           </button>
         </div>
       </div>
