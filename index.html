@@ -174,10 +174,10 @@ min-height:0;
   <button class="lang-btn" onclick="toggleLang()" id="lang-btn">EN</button>
 </div>
 <div class="tabs">
-  <button class="tab active" id="t-inventory" onclick="switchTab('inventory')"><i class="ti ti-box"></i> <span data-i="tab_inventory"></span></button>
-  <button class="tab" id="t-buy" onclick="switchTab('buy')"><i class="ti ti-shopping-cart"></i> <span data-i="tab_buy"></span></button>
-  <button class="tab" id="t-history" onclick="switchTab('history')"><i class="ti ti-calendar"></i> <span data-i="tab_history"></span></button>
-  <button class="tab" id="t-shoplist" onclick="switchTab('shoplist')"><i class="ti ti-list-check"></i> <span data-i="tab_shoplist"></span></button>
+  <button class="tab active" id="t-inventory" onclick="switchTab('inventory')">&#128230; <span data-i="tab_inventory"></span></button>
+  <button class="tab" id="t-buy" onclick="switchTab('buy')">&#128722; <span data-i="tab_buy"></span></button>
+  <button class="tab" id="t-history" onclick="switchTab('history')">&#128197; <span data-i="tab_history"></span></button>
+  <button class="tab" id="t-shoplist" onclick="switchTab('shoplist')">&#9989; <span data-i="tab_shoplist"></span></button>
 </div>
 <div class="content">
   <div id="tab-inventory" class="section active">
@@ -186,14 +186,14 @@ min-height:0;
     <div class="inv-list-panel">
       <div class="inv-list-controls">
         <button id="sort-btn" onclick="toggleSort()" class="sort-btn">
-          <i class="ti ti-arrows-sort" style="font-size:14px;vertical-align:-2px"></i>
+          &#8645; 
           <span id="sort-btn-label"></span>
         </button>
         <div class="filter-dropdown" style="flex:1;min-width:0">
           <button id="filter-dropdown-btn" onclick="toggleFilterDropdown()" class="filter-btn">
-            <i class="ti ti-filter" style="font-size:13px;vertical-align:-1px;flex-shrink:0"></i>
+            &#9660; 
             <span id="filter-summary" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1"></span>
-            <i class="ti ti-chevron-down" style="font-size:12px;vertical-align:-1px;flex-shrink:0" id="filter-chev"></i>
+            <span id="filter-chev" style="font-size:11px">&#9660;</span>
           </button>
           <div id="filter-dropdown-menu" class="filter-menu" style="display:none"></div>
         </div>
@@ -206,7 +206,7 @@ min-height:0;
     <div class="inv-form-panel">
       <div class="form-header">
         <div style="flex:1;cursor:pointer;-webkit-tap-highlight-color:transparent" onclick="toggleForm()">
-          <div class="form-title"><i class="ti ti-plus" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i><span data-i="add_form_title"></span></div>
+          <div class="form-title"><span data-i="add_form_title"></span></div>
           <div class="form-subtitle" data-i="add_form_subtitle"></div>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
@@ -232,7 +232,7 @@ min-height:0;
         <div class="field"><label data-i="lbl_qty_init"></label><input type="number" id="new-qty" placeholder="0" min="0" inputmode="numeric"></div>
         <div class="field"><label data-i="lbl_alert"></label><input type="number" id="new-min" placeholder="1" min="0" inputmode="numeric"></div>
       </div>
-      <button type="button" class="btn btn-p" onclick="addItem()" style="width:100%;justify-content:center;margin-top:2px"><i class="ti ti-plus"></i> <span data-i="btn_add_stock"></span></button>
+      <button type="button" class="btn btn-p" onclick="addItem()" style="width:100%;justify-content:center;margin-top:2px">+ <span data-i="btn_add_stock"></span></button>
       </div>
     </div>
   </div>
@@ -255,7 +255,7 @@ min-height:0;
         <div class="field"><label data-i="lbl_store"></label><input type="text" id="buy-store" data-i-ph="ph_store"></div>
       </div>
       <div class="field"><label data-i="lbl_note"></label><input type="text" id="buy-note" data-i-ph="ph_note"></div>
-      <button class="btn btn-p" id="buy-btn" onclick="recordBuy()"><i class="ti ti-shopping-cart"></i> <span data-i="btn_record"></span></button>
+      <button class="btn btn-p" id="buy-btn" onclick="recordBuy()">&#128722; <span data-i="btn_record"></span></button>
     </div>
   </div>
   <div id="tab-history" class="section"><div id="history-view"></div></div>
@@ -264,12 +264,12 @@ min-height:0;
     <div style="display:flex;gap:8px;align-items:flex-end">
       <div class="field" style="flex:1;margin-bottom:0"><label data-i="lbl_add_item"></label><select id="sl-item-sel"></select></div>
       <div class="field" style="width:72px;margin-bottom:0"><label data-i="lbl_qty_buy"></label><input type="number" id="sl-qty" value="1" min="1" inputmode="numeric"></div>
-      <button type="button" class="btn" style="height:42px;padding:0 14px;flex-shrink:0;align-self:flex-end" onclick="addToShopList()"><i class="ti ti-plus"></i></button>
+      <button type="button" class="btn" style="height:42px;padding:0 14px;flex-shrink:0;align-self:flex-end" onclick="addToShopList()">+</button>
     </div>
     <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-      <button type="button" class="btn btn-sm" onclick="addLowStock()"><i class="ti ti-alert-triangle" style="font-size:13px"></i> <span data-i="btn_add_low"></span></button>
+      <button type="button" class="btn btn-sm" onclick="addLowStock()">&#9888;  <span data-i="btn_add_low"></span></button>
       <button type="button" class="btn btn-sm btn-p" id="share-btn" onclick="shareShoplist()" style="margin-left:auto">&#128279; <span data-i="btn_share"></span></button>
-      <button type="button" class="btn btn-sm" onclick="clearDone()" style="color:#A32D2D;border-color:#E24B4A"><i class="ti ti-trash" style="font-size:13px"></i> <span data-i="btn_clear_done"></span></button>
+      <button type="button" class="btn btn-sm" onclick="clearDone()" style="color:#A32D2D;border-color:#E24B4A">&#128465;  <span data-i="btn_clear_done"></span></button>
     </div>
   </div>
   <div id="shoplist-view"></div>
@@ -724,8 +724,8 @@ function recordBuy(){
   document.getElementById('buy-qty').value='1';document.getElementById('buy-price').value='';
   document.getElementById('buy-store').value='';document.getElementById('buy-note').value='';
   var btn=document.getElementById('buy-btn');
-  btn.innerHTML='<i class="ti ti-check"></i> '+t('btn_recorded');
-  setTimeout(function(){btn.innerHTML='<i class="ti ti-shopping-cart"></i> '+t('btn_record');},1500);
+  btn.innerHTML='&#10003; '+t('btn_recorded');
+  setTimeout(function(){btn.innerHTML='&#128722; '+t('btn_record');},1500);
 }
 function shareShoplist(){
   if(!shoplist.length){alert(t('no_shoplist'));return;}
@@ -786,19 +786,19 @@ function renderHistory(){
   var never=items.filter(function(i){return !boughtIds.has(i.id);});
   var h='';
   if(notLast.length&&arr[0]){
-    h+='<div class="wb"><div class="wt"><i class="ti ti-clock" style="vertical-align:-2px;margin-right:4px"></i>'+t('bought_last')+' ('+fmtDate(arr[0].date)+')</div><div class="wc">';
+    h+='<div class="wb"><div class="wt">&#128336; '+t('bought_last')+' ('+fmtDate(arr[0].date)+')</div><div class="wc">';
     notLast.forEach(function(i){h+='<span class="wch">'+emoji(i.cat)+' '+i.name+'</span>';});
     h+='</div></div>';
   }
   arr.forEach(function(s,idx){
     var sid='sess-'+idx,op=idx===0;
     h+='<div class="sb"><div class="sh" data-sid="'+sid+'" onclick="toggleSess(this)">';
-    h+='<i class="ti ti-calendar" style="font-size:16px;color:var(--text2)"></i>';
+    h+='&#128197; ';
     h+='<span class="sd">'+fmtDate(s.date)+'</span>';
     if(s.store) h+='<span class="stbg">\ud83d\udccd '+s.store+'</span>';
     h+='<div class="sm"><span>'+s.items.length+' '+t('items_count')+'</span>';
     if(s.total) h+='<span style="font-weight:600">\u0e3f'+Math.round(s.total).toLocaleString()+'</span>';
-    h+='<i class="ti ti-chevron-down cv'+(op?' open':'')+'" id="cv-'+sid+'"></i>';
+    h+='<span class="cv'+(op?' open':'')+'" id="cv-'+sid+'"></i>';
     h+='</div></div>';
     h+='<div class="si'+(op?' open':'')+'" id="'+sid+'">';
     s.items.forEach(function(l){
@@ -806,7 +806,7 @@ function renderHistory(){
       h+='<div><div class="ln">'+l.name+'</div>'+(l.note?'<div class="lsub">'+l.note+'</div>':'')+'</div>';
       h+='<span class="lq">+'+l.qty+' '+l.unit+'</span>';
       if(l.price) h+='<span class="lp">\u0e3f'+Math.round(l.price).toLocaleString()+'</span>';
-      h+='<button class="log-del" onclick="deleteLog('+l.id+')" aria-label="delete"><i class="ti ti-trash" style="font-size:14px"></i></button>';
+      h+='<button class="log-del" onclick="deleteLog('+l.id+')" aria-label="delete">&#128465;</button>';
       h+='</div>';
     });
     h+='</div></div>';
@@ -856,7 +856,7 @@ function renderSL(){
   h+='<div class="xsum"><span>'+tot+' '+t('items_count')+'</span><span>'+t('sl_count')+' '+dn+'/'+tot+'</span></div>';
   shoplist.filter(function(x){return !x.done;}).concat(shoplist.filter(function(x){return x.done;})).forEach(function(s){
     h+='<div class="xli'+(s.done?' done':'')+'">'+
-      '<button class="xck'+(s.done?' checked':'')+'" onclick="togSL('+s.id+')">'+(s.done?'<i class="ti ti-check"></i>':'')+'</button>'+
+      '<button class="xck'+(s.done?' checked':'')+'" onclick="togSL('+s.id+')">'+(s.done?'&#10003;':'')+'</button>'+
       '<span class="xln">'+emoji(s.cat)+' '+s.name+'</span>'+
       '<span class="xq">'+s.qty+' '+s.unit+'</span>'+
       '<button class="xdl" onclick="delSL('+s.id+')">&#10005;</button>'+
