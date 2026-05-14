@@ -159,6 +159,10 @@ padding:14px 16px;
 .inv-form-panel .field{margin-bottom:7px}
 .inv-form-panel .field label{font-size:11px}
 .inv-form-panel .field input,.inv-form-panel .field select{font-size:14px;padding:7px 9px}
+
+.icon-opt{font-size:22px;padding:5px 7px;border:1.5px solid rgba(61,184,154,.2);border-radius:8px;background:rgba(255,255,255,.7);cursor:pointer;line-height:1;-webkit-appearance:none;transition:all .1s;flex-shrink:0}
+.icon-opt:active{transform:scale(.9)}
+.cat-tab-btn{transition:color .15s,border-bottom-color .15s}
 </style>
 
 </head>
@@ -353,7 +357,11 @@ if(!items.length){
 }
 
 function t(k){return (I18N[curLang]||I18N.th)[k]||k;}
-function emoji(cat){return CAT_EMOJI[cat]||'\ud83d\udce6';}
+function emoji(cat){
+  var c=catList.find(function(x){return x.th===cat||x.en===cat;});
+  if(c&&c.icon) return c.icon;
+  return CAT_EMOJI[cat]||'📦';
+}
 
 function applyLang(){
   document.getElementById('app-title').textContent=t('app_title');
@@ -482,16 +490,55 @@ function setFilter(f,btn){selectedFilters=[f];renderFilterDropdown();renderItems
 function onCatChange(sel){
   if(sel.value==='__add__'){
     document.getElementById('add-cat-modal').style.display='flex';
-    showManageCats();
+    showCatTab('add');
+    initIconPicker();
     sel.value=allCats(curLang)[0]||'';
   }
+}
+var ICON_LIST=['🧂','🧴','🥦','🥬','🍗','🥩','🐟','🥚','🧈','🍞','🥫','🧃','🥛','🍵','☕','🍺','🧹','🪣','🦺','🧻','🧼','🪥','💊','🏥','🛒','📦','🎁','🛍','🍎','🍊','🍇','🍓','🥝','🥕','🥔','🧅','🌽','🫘','🥜','🍚','🍜','🌶','🧄','🫙','🥤','🍷','🍾','🍫','🍬','🧁','🏠','🔑','💡','🔧','⚡','🌿','🪴','👕','👟','🎒','✏','📚','💻','📱','🎮','🚗','✈','🏋','💤','🧺','🌏'];
+function initIconPicker(){
+  var el=document.getElementById('icon-picker');
+  if(!el) return;
+  var cur=document.getElementById('new-cat-icon-val').value||'📦';
+  el.innerHTML=ICON_LIST.map(function(ic){
+    var active=ic===cur;
+    var bg=active?'rgba(61,184,154,.2)':'rgba(255,255,255,.7)';
+    var bd=active?'rgba(61,184,154,.8)':'rgba(61,184,154,.2)';
+    return '<button type="button" class="icon-opt" onclick="selectCatIcon(this.textContent)" style="background:'+bg+';border-color:'+bd+'">'+ic+'</button>';
+  }).join('');
+}
+function selectCatIcon(icon){
+  var iv=document.getElementById('new-cat-icon-val');
+  var prev=document.getElementById('new-cat-icon-preview');
+  if(iv) iv.value=icon;
+  if(prev) prev.textContent=icon;
+  document.querySelectorAll('.icon-opt').forEach(function(el){
+    var active=el.textContent===icon;
+    el.style.background=active?'rgba(61,184,154,.2)':'rgba(255,255,255,.7)';
+    el.style.borderColor=active?'rgba(61,184,154,.8)':'rgba(61,184,154,.2)';
+  });
+}
+function showCatTab(tab){
+  var addTab=document.getElementById('tab-add-cat');
+  var delTab=document.getElementById('tab-del-cat');
+  if(addTab) addTab.style.display=tab==='add'?'block':'none';
+  if(delTab) delTab.style.display=tab==='del'?'block':'none';
+  document.querySelectorAll('.cat-tab-btn').forEach(function(el){
+    var isActive=el.dataset.tab===tab;
+    el.style.color=isActive?'var(--accent)':'var(--text2)';
+    el.style.borderBottomColor=isActive?'var(--accent)':'transparent';
+  });
+  if(tab==='del') showManageCats();
+  if(tab==='add') initIconPicker();
 }
 function closeAddCat(){document.getElementById('add-cat-modal').style.display='none';}
 function saveNewCat(){
   var th=document.getElementById('new-cat-th').value.trim();
   var en=document.getElementById('new-cat-en').value.trim();
   if(!th||!en){alert('กรุณาใส่ชื่อทั้งภาษาไทยและอังกฤษ');return;}
-  catList.push({th:th,en:en});
+  var iconEl=document.getElementById('new-cat-icon-val');
+  var icon=iconEl?iconEl.value||'📦':'📦';
+  catList.push({th:th,en:en,icon:icon});
   saveCats();
   document.getElementById('new-cat-th').value='';
   document.getElementById('new-cat-en').value='';
@@ -512,9 +559,10 @@ function showManageCats(){
   if(!el) return;
   if(!catList.length){el.innerHTML='<div style="color:var(--text2);font-size:13px;padding:8px 0">ไม่มีหมวดหมู่</div>';return;}
   el.innerHTML=catList.map(function(c,i){
-    return '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:.5px solid var(--border)">'+
+    return '<div style="display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:.5px solid rgba(61,184,154,.15)">'+
+      '<span style="font-size:20px;flex-shrink:0">'+(c.icon||emoji(c.th))+'</span>'+
       '<span style="flex:1;font-size:14px;color:var(--text)">'+c.th+' / '+c.en+'</span>'+
-      '<button onclick="deleteCat('+i+')" style="background:none;border:none;color:#E24B4A;cursor:pointer;font-size:16px;padding:2px 6px">&#10005;</button>'+
+      '<button onclick="deleteCat('+i+')" style="background:none;border:.5px solid rgba(224,90,90,.3);border-radius:6px;color:#e05a5a;cursor:pointer;font-size:14px;padding:3px 8px">&#10005;</button>'+
     '</div>';
   }).join('');
 }
@@ -814,16 +862,39 @@ document.addEventListener('click',function(e){
   </div>
 </div>
 
-<div id="add-cat-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:20px">
-  <div style="background:var(--bg);border-radius:var(--rl);padding:20px;width:100%;max-width:360px;border:.5px solid var(--border)">
-    <div style="font-size:17px;font-weight:600;margin-bottom:4px;color:var(--text)">จัดการหมวดหมู่</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:12px">เพิ่มหรือลบหมวดได้อิสระ</div>
-    <div id="manage-cats-list" style="margin-bottom:12px"></div>
-    <div class="field"><label>ชื่อภาษาไทย</label><input type="text" id="new-cat-th" placeholder="เช่น เบเกอรี่"></div>
-    <div class="field"><label>English name</label><input type="text" id="new-cat-en" placeholder="e.g. Bakery"></div>
-    <div style="display:flex;gap:8px;margin-top:4px">
-      <button type="button" class="btn" style="flex:1" onclick="closeAddCat()">ยกเลิก</button>
-      <button type="button" class="btn btn-p" style="flex:2" onclick="saveNewCat()">บันทึก</button>
+<div id="add-cat-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:1000;align-items:center;justify-content:center;padding:16px">
+  <div style="background:linear-gradient(160deg,#f0faf7,#e8f4fd);border-radius:var(--rl);width:100%;max-width:380px;border:.5px solid rgba(61,184,154,.25);box-shadow:0 8px 32px rgba(61,184,154,.15);overflow:hidden">
+    <div style="padding:16px 18px 0;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:17px;font-weight:700;color:var(--text)">จัดการหมวดหมู่</div>
+      <button type="button" onclick="closeAddCat()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text2);padding:4px">&#10005;</button>
+    </div>
+    <div style="display:flex;padding:0 18px;border-bottom:.5px solid rgba(61,184,154,.2);margin-top:12px">
+      <button type="button" class="cat-tab-btn" data-tab="add" onclick="showCatTab('add')" style="flex:1;padding:9px 4px;font-size:13px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid var(--accent);color:var(--accent)">➕ เพิ่มหมวด</button>
+      <button type="button" class="cat-tab-btn" data-tab="del" onclick="showCatTab('del')" style="flex:1;padding:9px 4px;font-size:13px;font-weight:600;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;color:var(--text2)">➖ ลบ/จัดการ</button>
+    </div>
+    <div id="tab-add-cat" style="padding:16px 18px">
+      <div class="field"><label>ชื่อภาษาไทย</label><input type="text" id="new-cat-th" placeholder="เช่น เบเกอรี่"></div>
+      <div class="field"><label>English name</label><input type="text" id="new-cat-en" placeholder="e.g. Bakery"></div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;color:var(--text2);font-weight:500;display:block;margin-bottom:8px">เลือก Icon สำหรับหมวดหมู่นี้</label>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div id="new-cat-icon-preview" style="font-size:30px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.85);border-radius:var(--r);border:1.5px solid rgba(61,184,154,.4);box-shadow:0 2px 8px rgba(61,184,154,.12)">📦</div>
+          <input type="hidden" id="new-cat-icon-val" value="📦">
+          <div style="font-size:12px;color:var(--text2);line-height:1.5">กด icon ด้านล่าง<br>เพื่อเลือกใช้งาน</div>
+        </div>
+        <div id="icon-picker" style="display:flex;flex-wrap:wrap;gap:5px;max-height:160px;overflow-y:auto;-webkit-overflow-scrolling:touch;background:rgba(255,255,255,.6);border-radius:var(--r);padding:8px;border:.5px solid rgba(61,184,154,.2)"></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn" style="flex:1" onclick="closeAddCat()">ยกเลิก</button>
+        <button type="button" class="btn btn-p" style="flex:2" onclick="saveNewCat()">เพิ่มหมวด</button>
+      </div>
+    </div>
+    <div id="tab-del-cat" style="display:none;padding:16px 18px">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:10px">กด × เพื่อลบหมวดหมู่ที่ไม่ต้องการ</div>
+      <div id="manage-cats-list" style="max-height:280px;overflow-y:auto;-webkit-overflow-scrolling:touch"></div>
+      <div style="margin-top:12px">
+        <button type="button" class="btn" style="width:100%" onclick="closeAddCat()">ปิด</button>
+      </div>
     </div>
   </div>
 </div>
