@@ -147,6 +147,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
 .filter-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;font-size:14px;color:var(--text);border-bottom:.5px solid var(--border)}
 .filter-opt:last-child{border-bottom:none}
 .filter-opt input[type=checkbox]{width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:var(--text)}
+
+.inv-form-panel{flex-shrink:0;background:var(--bg);border:.5px solid var(--border);border-radius:var(--rl);padding:12px 14px}
+.form-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:8px}
+.form-title{font-size:13px;font-weight:600;color:var(--text)}
+.form-subtitle{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.4}
+.btn-clear-form{background:none;border:.5px solid var(--border2);border-radius:var(--r);padding:4px 10px;font-size:12px;color:var(--text2);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.btn-clear-form:active{opacity:.7}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.unit-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.chip{padding:3px 8px;border-radius:999px;font-size:11px;border:.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;-webkit-appearance:none}
+.chip-active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.chip:active{opacity:.7}
+.inv-form-panel .field{margin-bottom:7px}
+.inv-form-panel .field label{font-size:11px}
+.inv-form-panel .field input,.inv-form-panel .field select{font-size:14px;padding:7px 9px}
 </style>
 </head>
 <body>
@@ -188,19 +203,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;ba
     </div>
     <!-- BOTTOM: Add Item Form -->
     <div class="inv-form-panel">
-      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px" data-i="btn_add_item"></div>
-      <div class="r3">
-        <div class="field"><label data-i="lbl_name"></label><input type="text" id="new-name" data-i-ph="ph_name"></div>
+      <div class="form-header">
+        <div>
+          <div class="form-title"><i class="ti ti-plus" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i><span data-i="add_form_title"></span></div>
+          <div class="form-subtitle" data-i="add_form_subtitle"></div>
+        </div>
+        <button type="button" class="btn-clear-form" onclick="clearForm()" data-i="btn_clear_form"></button>
+      </div>
+      <div class="field"><label data-i="lbl_name"></label><input type="text" id="new-name" data-i-ph="ph_name"></div>
+      <div class="form-row-2">
         <div class="field"><label data-i="lbl_cat"></label>
           <select id="new-cat" onchange="onCatChange(this)"></select>
         </div>
-        <div class="field"><label data-i="lbl_unit"></label><input type="text" id="new-unit" data-i-ph="ph_unit"></div>
+        <div class="field">
+          <label data-i="lbl_unit"></label>
+          <input type="text" id="new-unit" data-i-ph="ph_unit" oninput="renderUnitChips()">
+          <div id="unit-chips" class="unit-chips"></div>
+        </div>
       </div>
-      <div class="r2">
+      <div class="form-row-2">
         <div class="field"><label data-i="lbl_qty_init"></label><input type="number" id="new-qty" placeholder="0" min="0" inputmode="numeric"></div>
         <div class="field"><label data-i="lbl_alert"></label><input type="number" id="new-min" placeholder="1" min="0" inputmode="numeric"></div>
       </div>
-      <button type="button" class="btn btn-p" onclick="addItem()"><i class="ti ti-plus"></i> <span data-i="btn_add_item"></span></button>
+      <button type="button" class="btn btn-p" onclick="addItem()" style="width:100%;justify-content:center;margin-top:2px"><i class="ti ti-plus"></i> <span data-i="btn_add_stock"></span></button>
     </div>
   </div>
 </div>
@@ -278,7 +303,7 @@ var I18N={
     never_bought:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e40\u0e04\u0e22\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_history:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34', no_items:'\u0e44\u0e21\u0e48\u0e1e\u0e1a\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32',
     no_logs:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_shoplist:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23',
     no_low:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e02\u0e2d\u0e07\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14\u0e43\u0e19\u0e02\u0e13\u0e30\u0e19\u0e35\u0e49',
-    sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',btn_sort_cat:'เรียงตามหมวดหมู่',btn_share:'แชร์',lbl_edit_title:'แก้ไขสินค้า',btn_cancel:'ยกเลิก',btn_save:'บันทึก',opt_add_cat:'+ เพิ่มหมวดใหม่...',
+    sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',btn_sort_cat:'เรียงตามหมวดหมู่',btn_share:'แชร์',lbl_edit_title:'แก้ไขสินค้า',btn_cancel:'ยกเลิก',btn_save:'บันทึก',opt_add_cat:'+ เพิ่มหมวดใหม่...',btn_add_stock:'เพิ่มเข้าคลัง',add_form_title:'เพิ่มสินค้าใหม่',add_form_subtitle:'กรอกข้อมูลของใช้ที่ต้องการติดตามในคลัง',btn_clear_form:'ล้างข้อมูล',unit_chips:['ขวด','ก้อน','ถุง','แพ็ค','กล่อง','ชิ้น'],
     cats:['\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07','\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49','\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e2a\u0e14','\u0e1c\u0e31\u0e01','\u0e02\u0e2d\u0e07\u0e41\u0e2b\u0e49\u0e07','\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e30\u0e2d\u0e32\u0e14','\u0e19\u0e21','\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e14\u0e37\u0e48\u0e21']
   },
   en:{
@@ -296,7 +321,7 @@ var I18N={
     badge_low:'Low stock', items_count:'items', bought_last:'Not bought last trip',
     never_bought:'Never purchased', no_history:'No history', no_items:'No items found',
     no_logs:'No purchase history', no_shoplist:'No items in list',
-    no_low:'No low stock items',lbl_edit_title:'Edit item',btn_cancel:'Cancel',btn_save:'Save',opt_add_cat:'+ Add new category...',
+    no_low:'No low stock items',lbl_edit_title:'Edit item',btn_cancel:'Cancel',btn_save:'Save',opt_add_cat:'+ Add new category...',btn_add_stock:'Add to stock',add_form_title:'Add new item',add_form_subtitle:'Enter an item you want to track in your stock',btn_clear_form:'Clear',unit_chips:['Bottle','Bar','Bag','Pack','Box','Piece'],
     sl_count:'Bought',
     cats:['Seasoning','Household','Fresh food','Vegetables','Dry goods','Cleaning','Milk','Drinks']
   }
@@ -735,6 +760,28 @@ function saveEdit(){
 
 
 
+function clearForm(){
+  document.getElementById('new-name').value='';
+  document.getElementById('new-unit').value='';
+  document.getElementById('new-qty').value='';
+  document.getElementById('new-min').value='';
+  renderUnitChips();
+}
+function setUnit(val){
+  document.getElementById('new-unit').value=val;
+  renderUnitChips();
+}
+function renderUnitChips(){
+  var el=document.getElementById('unit-chips');
+  if(!el) return;
+  var chips=((I18N[curLang]||I18N.th).unit_chips)||[];
+  var cur=document.getElementById('new-unit').value;
+  el.innerHTML=chips.map(function(c){
+    var active=c===cur;
+    var onclick='setUnit(this.textContent)';
+    return '<button type="button" class="chip'+(active?' chip-active':'')+'" onclick="'+onclick+'">'+c+'</button>';
+  }).join('');
+}
 document.getElementById('buy-date').value=new Date().toISOString().split('T')[0];
 applyLang();
 updStats();
