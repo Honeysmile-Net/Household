@@ -116,9 +116,9 @@ padding:5px 12px;
 border-radius:999px;
 font-size:12px;
 cursor:pointer;
-border:.5px solid var(–border2);
-background:var(–bg);
-color:var(–text2);
+border:.5px solid var(--border2);
+background:var(--bg);
+color:var(--text2);
 -webkit-appearance:none;
 flex-shrink:0;
 }
@@ -130,22 +130,26 @@ overflow-y:auto;
 min-height:0;
 }
 
-.filter-dropdown{position:relative;flex:1;min-width:0}
-.filter-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;font-size:12px;cursor:pointer;border:.5px solid rgba(61,184,154,.4);background:rgba(255,255,255,.8);color:var(–text2);-webkit-appearance:none;width:100%;min-width:0;text-align:left;backdrop-filter:blur(4px)}
-.filter-menu{position:absolute;top:calc(100% + 4px);left:0;right:0;background:rgba(255,255,255,.96);border:.5px solid rgba(61,184,154,.25);border-radius:var(–r);z-index:200;max-height:220px;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 4px 20px rgba(61,184,154,.15);backdrop-filter:blur(12px)}
-.filter-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;font-size:14px;color:var(–text);border-bottom:.5px solid var(–border)}
-.filter-opt:last-child{border-bottom:none}
-.filter-opt input[type=checkbox]{width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:var(–text)}
 
-.inv-form-panel{flex-shrink:0;background:linear-gradient(160deg,rgba(255,255,255,.9) 0%,rgba(235,248,255,.9) 100%);border:.5px solid rgba(91,191,232,.25);border-radius:var(–rl);padding:12px 14px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(91,191,232,.08)}
+
+
+
+.filter-dropdown{position:relative;flex:1;min-width:0}
+.filter-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;font-size:12px;cursor:pointer;border:.5px solid rgba(61,184,154,.4);background:rgba(255,255,255,.8);color:var(--text2);-webkit-appearance:none;width:100%;min-width:0;text-align:left;backdrop-filter:blur(4px)}
+.filter-menu{position:absolute;top:calc(100% + 4px);left:0;right:0;background:rgba(255,255,255,.96);border:.5px solid rgba(61,184,154,.25);border-radius:var(--r);z-index:200;max-height:220px;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 4px 20px rgba(61,184,154,.15);backdrop-filter:blur(12px)}
+.filter-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;font-size:14px;color:var(--text);border-bottom:.5px solid var(--border)}
+.filter-opt:last-child{border-bottom:none}
+.filter-opt input[type=checkbox]{width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:var(--text)}
+
+.inv-form-panel{flex-shrink:0;background:linear-gradient(160deg,rgba(255,255,255,.9) 0%,rgba(235,248,255,.9) 100%);border:.5px solid rgba(91,191,232,.25);border-radius:var(--rl);padding:12px 14px;backdrop-filter:blur(8px);box-shadow:0 2px 12px rgba(91,191,232,.08)}
 .form-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:8px}
-.form-title{font-size:13px;font-weight:600;color:var(–text)}
-.form-subtitle{font-size:11px;color:var(–text2);margin-top:2px;line-height:1.4}
-.btn-clear-form{background:none;border:.5px solid var(–border2);border-radius:var(–r);padding:4px 10px;font-size:12px;color:var(–text2);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.form-title{font-size:13px;font-weight:600;color:var(--text)}
+.form-subtitle{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.4}
+.btn-clear-form{background:none;border:.5px solid var(--border2);border-radius:var(--r);padding:4px 10px;font-size:12px;color:var(--text2);cursor:pointer;white-space:nowrap;flex-shrink:0}
 .btn-clear-form:active{opacity:.7}
 .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .unit-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
-.chip{padding:3px 8px;border-radius:999px;font-size:11px;border:.5px solid rgba(61,184,154,.35);background:rgba(224,248,240,.6);color:var(–text2);cursor:pointer;-webkit-appearance:none}
+.chip{padding:3px 8px;border-radius:999px;font-size:11px;border:.5px solid rgba(61,184,154,.35);background:rgba(224,248,240,.6);color:var(--text2);cursor:pointer;-webkit-appearance:none}
 .chip-active{background:linear-gradient(135deg,#3db89a,#2da888);color:#fff;border-color:transparent;box-shadow:0 1px 5px rgba(61,184,154,.35)}
 .chip:active{opacity:.7}
 .inv-form-panel .field{margin-bottom:7px}
@@ -167,16 +171,13 @@ min-height:0;
     <h1 id="app-title">&#127968; คลังของใช้ในบ้าน</h1>
     <p id="app-sub">จัดการสินค้าและบันทึกการซื้อทุกครั้ง</p>
   </div>
-  <div style="display:flex;gap:8px;align-items:center">
-    <button type="button" onclick="resetToDefault()" style="background:none;border:.5px solid rgba(224,90,90,.4);border-radius:var(--r);padding:5px 10px;font-size:11px;color:#e05a5a;cursor:pointer" data-i="btn_reset">รีเซ็ต</button>
-    <button class="lang-btn" onclick="toggleLang()" id="lang-btn">EN</button>
-  </div>
+  <button class="lang-btn" onclick="toggleLang()" id="lang-btn">EN</button>
 </div>
 <div class="tabs">
-  <button class="tab active" id="t-inventory" onclick="switchTab('inventory')">&#128230; <span data-i="tab_inventory"></span></button>
-  <button class="tab" id="t-buy" onclick="switchTab('buy')">&#128722; <span data-i="tab_buy"></span></button>
-  <button class="tab" id="t-history" onclick="switchTab('history')">&#128197; <span data-i="tab_history"></span></button>
-  <button class="tab" id="t-shoplist" onclick="switchTab('shoplist')">&#9989; <span data-i="tab_shoplist"></span></button>
+  <button class="tab active" id="t-inventory" onclick="switchTab('inventory')">📦 <span data-i="tab_inventory"></span></button>
+  <button class="tab" id="t-buy" onclick="switchTab('buy')">🛒 <span data-i="tab_buy"></span></button>
+  <button class="tab" id="t-history" onclick="switchTab('history')">📅 <span data-i="tab_history"></span></button>
+  <button class="tab" id="t-shoplist" onclick="switchTab('shoplist')">✅ <span data-i="tab_shoplist"></span></button>
 </div>
 <div class="content">
   <div id="tab-inventory" class="section active">
@@ -185,14 +186,14 @@ min-height:0;
     <div class="inv-list-panel">
       <div class="inv-list-controls">
         <button id="sort-btn" onclick="toggleSort()" class="sort-btn">
-          &#8645; 
+          ⇅
           <span id="sort-btn-label"></span>
         </button>
         <div class="filter-dropdown" style="flex:1;min-width:0">
           <button id="filter-dropdown-btn" onclick="toggleFilterDropdown()" class="filter-btn">
-            &#9660; 
+            ▾
             <span id="filter-summary" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1"></span>
-            <span id="filter-chev" style="font-size:11px">&#9660;</span>
+            <span id="filter-chev" style="font-size:11px">▾</span>
           </button>
           <div id="filter-dropdown-menu" class="filter-menu" style="display:none"></div>
         </div>
@@ -254,7 +255,7 @@ min-height:0;
         <div class="field"><label data-i="lbl_store"></label><input type="text" id="buy-store" data-i-ph="ph_store"></div>
       </div>
       <div class="field"><label data-i="lbl_note"></label><input type="text" id="buy-note" data-i-ph="ph_note"></div>
-      <button class="btn btn-p" id="buy-btn" onclick="recordBuy()">&#128722; <span data-i="btn_record"></span></button>
+      <button class="btn btn-p" id="buy-btn" onclick="recordBuy()">🛒 <span data-i="btn_record"></span></button>
     </div>
   </div>
   <div id="tab-history" class="section"><div id="history-view"></div></div>
@@ -266,9 +267,9 @@ min-height:0;
       <button type="button" class="btn" style="height:42px;padding:0 14px;flex-shrink:0;align-self:flex-end" onclick="addToShopList()">+</button>
     </div>
     <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-      <button type="button" class="btn btn-sm" onclick="addLowStock()">&#9888;  <span data-i="btn_add_low"></span></button>
+      <button type="button" class="btn btn-sm" onclick="addLowStock()">⚠️ <span data-i="btn_add_low"></span></button>
       <button type="button" class="btn btn-sm btn-p" id="share-btn" onclick="shareShoplist()" style="margin-left:auto">&#128279; <span data-i="btn_share"></span></button>
-      <button type="button" class="btn btn-sm" onclick="clearDone()" style="color:#A32D2D;border-color:#E24B4A">&#128465;  <span data-i="btn_clear_done"></span></button>
+      <button type="button" class="btn btn-sm" onclick="clearDone()" style="color:#A32D2D;border-color:#E24B4A">🗑 <span data-i="btn_clear_done"></span></button>
     </div>
   </div>
   <div id="shoplist-view"></div>
@@ -310,7 +311,7 @@ var I18N={
     never_bought:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e40\u0e04\u0e22\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_history:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34', no_items:'\u0e44\u0e21\u0e48\u0e1e\u0e1a\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32',
     no_logs:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34\u0e01\u0e32\u0e23\u0e0b\u0e37\u0e49\u0e2d', no_shoplist:'\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23',
     no_low:'\u0e44\u0e21\u0e48\u0e21\u0e35\u0e02\u0e2d\u0e07\u0e43\u0e01\u0e25\u0e49\u0e2b\u0e21\u0e14\u0e43\u0e19\u0e02\u0e13\u0e30\u0e19\u0e35\u0e49',
-    sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',btn_sort_cat:'เรียงตามหมวดหมู่',btn_sort_cat_active:'กำลังเรียงตามหมวดหมู่',form_collapse:'ยุบฟอร์ม',btn_reset:'รีเซ็ต default',form_expand:'เปิดฟอร์ม',add_cat_title:'จัดการหมวดหมู่',add_cat_subtitle:'เพิ่ม ลบ และเลือกไอคอนหมวดหมู่',tab_add_cat:'เพิ่มหมวด',tab_delete_cat:'ลบหมวด',lbl_cat_icon:'ไอคอน',lbl_cat_th:'ชื่อภาษาไทย',lbl_cat_en:'ชื่อภาษาอังกฤษ',ph_cat_th:'เช่น เบเกอรี่',ph_cat_en:'e.g. Bakery',alert_cat_required:'กรุณาใส่ชื่อทั้งภาษาไทยและอังกฤษ',empty_cat:'ไม่มีหมวดหมู่',btn_share:'แชร์',lbl_edit_title:'แก้ไขสินค้า',btn_cancel:'ยกเลิก',btn_save:'บันทึก',opt_add_cat:'+ เพิ่มหมวดใหม่...',btn_add_stock:'เพิ่มเข้าคลัง',add_form_title:'เพิ่มสินค้าใหม่',add_form_subtitle:'กรอกข้อมูลของใช้ที่ต้องการติดตามในคลัง',btn_clear_form:'ล้างข้อมูล',unit_chips:['ขวด','ก้อน','ถุง','แพ็ค','กล่อง','ชิ้น'],
+    sl_count:'\u0e0b\u0e37\u0e49\u0e2d\u0e41\u0e25\u0e49\u0e27',btn_sort_cat:'เรียงตามหมวดหมู่',btn_sort_cat_active:'กำลังเรียงตามหมวดหมู่',form_collapse:'ยุบฟอร์ม',form_expand:'เปิดฟอร์ม',add_cat_title:'จัดการหมวดหมู่',add_cat_subtitle:'เพิ่ม ลบ และเลือกไอคอนหมวดหมู่',tab_add_cat:'เพิ่มหมวด',tab_delete_cat:'ลบหมวด',lbl_cat_icon:'ไอคอน',lbl_cat_th:'ชื่อภาษาไทย',lbl_cat_en:'ชื่อภาษาอังกฤษ',ph_cat_th:'เช่น เบเกอรี่',ph_cat_en:'e.g. Bakery',alert_cat_required:'กรุณาใส่ชื่อทั้งภาษาไทยและอังกฤษ',empty_cat:'ไม่มีหมวดหมู่',btn_share:'แชร์',lbl_edit_title:'แก้ไขสินค้า',btn_cancel:'ยกเลิก',btn_save:'บันทึก',opt_add_cat:'+ เพิ่มหมวดใหม่...',btn_add_stock:'เพิ่มเข้าคลัง',add_form_title:'เพิ่มสินค้าใหม่',add_form_subtitle:'กรอกข้อมูลของใช้ที่ต้องการติดตามในคลัง',btn_clear_form:'ล้างข้อมูล',unit_chips:['ขวด','ก้อน','ถุง','แพ็ค','กล่อง','ชิ้น'],
     cats:['เครื่องปรุง','ของใช้','อาหารสด','ผัก','ของแห้ง','ทำความสะอาด','นม','เครื่องดื่ม']
   },
   en:{
@@ -322,7 +323,7 @@ var I18N={
     lbl_date:'Date', lbl_store:'Store', lbl_note:'Note', lbl_add_item:'Add item',
     ph_name:'e.g. Cooking oil', ph_unit:'bottle/bar', ph_store:'e.g. Tesco', ph_note:'Optional...',
     btn_add_item:'Add item', btn_record:'Record purchase', btn_recorded:'Saved!',
-    btn_add_low:'Add low stock items', btn_clear_done:'Clear bought',btn_share:'Share',btn_sort_cat:'Sort by category',btn_sort_cat_active:'Sorted by category',form_collapse:'Collapse form',btn_reset:'Reset to default',form_expand:'Expand form',add_cat_title:'Manage categories',add_cat_subtitle:'Add, delete, and choose category icons',tab_add_cat:'Add category',tab_delete_cat:'Delete category',lbl_cat_icon:'Icon',lbl_cat_th:'Thai name',lbl_cat_en:'English name',ph_cat_th:'e.g. เบเกอรี่',ph_cat_en:'e.g. Bakery',alert_cat_required:'Please enter both Thai and English category names.',empty_cat:'No categories',
+    btn_add_low:'Add low stock items', btn_clear_done:'Clear bought',btn_share:'Share',btn_sort_cat:'Sort by category',btn_sort_cat_active:'Sorted by category',form_collapse:'Collapse form',form_expand:'Expand form',add_cat_title:'Manage categories',add_cat_subtitle:'Add, delete, and choose category icons',tab_add_cat:'Add category',tab_delete_cat:'Delete category',lbl_cat_icon:'Icon',lbl_cat_th:'Thai name',lbl_cat_en:'English name',ph_cat_th:'e.g. เบเกอรี่',ph_cat_en:'e.g. Bakery',alert_cat_required:'Please enter both Thai and English category names.',empty_cat:'No categories',
     stat_total:'Total items', stat_month:'This month', stat_low:'Low stock',
     filter_all:'All', filter_low:'\u26a0\ufe0f Low stock',
     badge_low:'Low stock', items_count:'items', bought_last:'Not bought last trip',
@@ -416,14 +417,10 @@ function saveCats(){try{localStorage.setItem(CATS_KEY,JSON.stringify(catList));}
 
 if(!items.length){
   items=[
-    {id:1,name:'น้ำมันพืช',cat:'เครื่องปรุง',unit:'ขวด',qty:2,min:1},
-    {id:2,name:'ซีอิ้วขาว',cat:'เครื่องปรุง',unit:'ขวด',qty:1,min:1},
-    {id:3,name:'น้ำปลา',cat:'เครื่องปรุง',unit:'ขวด',qty:1,min:1},
-    {id:4,name:'น้ำตาล',cat:'เครื่องปรุง',unit:'ถุง',qty:1,min:1},
-    {id:5,name:'สบู่',cat:'ของใช้',unit:'ขวด',qty:4,min:2},
-    {id:6,name:'ยาสระผม',cat:'ของใช้',unit:'ขวด',qty:1,min:1},
-    {id:7,name:'น้ำยาปรับผ้านุ่ม',cat:'ทำความสะอาด',unit:'ถุง',qty:1,min:1},
-    {id:8,name:'ผงซักฟอก',cat:'ทำความสะอาด',unit:'ถุง',qty:0,min:1}
+    {id:1,name:'\u0e19\u0e49\u0e33\u0e21\u0e31\u0e19\u0e1e\u0e37\u0e0a',cat:'\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07',unit:'\u0e02\u0e27\u0e14',qty:2,min:1},
+    {id:2,name:'\u0e0b\u0e35\u0e2d\u0e34\u0e49\u0e27\u0e02\u0e32\u0e27',cat:'\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e38\u0e07',unit:'\u0e02\u0e27\u0e14',qty:1,min:1},
+    {id:3,name:'\u0e2a\u0e1a\u0e39\u0e48',cat:'\u0e02\u0e2d\u0e07\u0e43\u0e0a\u0e49',unit:'\u0e01\u0e49\u0e2d\u0e19',qty:4,min:2},
+    {id:4,name:'\u0e1c\u0e07\u0e0b\u0e31\u0e01\u0e1f\u0e2d\u0e01',cat:'\u0e17\u0e33\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e30\u0e2d\u0e32\u0e14',unit:'\u0e16\u0e38\u0e07',qty:0,min:1}
   ];
   save();
 }
@@ -633,14 +630,11 @@ function saveNewCat(){
   document.getElementById('new-cat').value=curLang==='th'?th:en;
 }
 function deleteCat(idx){
-  var c=catList[idx];
-  if(!c) return;
-  var name=curLang==='th'?c.th:c.en;
-  var msg=curLang==='th'?'ลบหมวด “'+name+'”?':'Delete category “'+name+'”?';
-  showConfirm(msg,function(){
-    catList.splice(idx,1);
-    saveCats();renderCatOptions();renderFilterRow();showManageCats();
-  });
+  catList.splice(idx,1);
+  saveCats();
+  renderCatOptions();
+  renderFilterRow();
+  showManageCats();
 }
 function showManageCats(){
   var el=document.getElementById('manage-cats-list');
@@ -698,53 +692,7 @@ function renderItems(){
 }
 
 function chgQty(id,d){var it=items.find(function(i){return i.id===id;});if(it){it.qty=Math.max(0,it.qty+d);save();renderItems();}}
-function showConfirm(msg, cb){
-  var overlay=document.getElementById('confirm-overlay');
-  var msgEl=document.getElementById('confirm-msg');
-  var okBtn=document.getElementById('confirm-ok');
-  var cancelBtn=document.getElementById('confirm-cancel');
-  if(!overlay) return cb && cb();
-  msgEl.textContent=msg;
-  okBtn.textContent=curLang==='th'?'ลบ':'Delete';
-  cancelBtn.textContent=curLang==='th'?'ยกเลิก':'Cancel';
-  overlay.style.display='flex';
-  okBtn.onclick=function(){overlay.style.display='none';if(cb) cb();};
-  cancelBtn.onclick=function(){overlay.style.display='none';};
-}
-function resetToDefault(){
-  var msg=curLang==='th'?'ลบข้อมูลทั้งหมดและโหลดรายการ default ใหม่?\nอันนี้ไม่สามารถย้อนกลับได้':'Reset all data and load default items?\nThis cannot be undone.';
-  showConfirm(msg, function(){
-    items=[
-      {id:1,name:'น้ำมันพืช',cat:'เครื่องปรุง',unit:'ขวด',qty:2,min:1},
-      {id:2,name:'ซีอิ้วขาว',cat:'เครื่องปรุง',unit:'ขวด',qty:1,min:1},
-      {id:3,name:'น้ำปลา',cat:'เครื่องปรุง',unit:'ขวด',qty:1,min:1},
-      {id:4,name:'น้ำตาล',cat:'เครื่องปรุง',unit:'ถุง',qty:1,min:1},
-      {id:5,name:'สบู่',cat:'ของใช้',unit:'ขวด',qty:4,min:2},
-      {id:6,name:'ยาสระผม',cat:'ของใช้',unit:'ขวด',qty:1,min:1},
-      {id:7,name:'น้ำยาปรับผ้านุ่ม',cat:'ทำความสะอาด',unit:'ถุง',qty:1,min:1},
-      {id:8,name:'ผงซักฟอก',cat:'ทำความสะอาด',unit:'ถุง',qty:0,min:1}
-    ];
-    logs=[];
-    shoplist=[];
-    save();
-    try{localStorage.setItem(SK,JSON.stringify(shoplist));}catch(e){}
-    renderItems();
-    updStats();
-    updBuySel();
-    updSlSel();
-    renderSL();
-  });
-}
-function delItem(id){
-  id=parseInt(id)||id;
-  var it=items.find(function(i){return i.id===id;});
-  if(!it) return;
-  var msg=curLang==='th'?'ลบ “'+it.name+'” ออกจากคลัง?':'Delete “'+it.name+'”?';
-  showConfirm(msg,function(){
-    items=items.filter(function(i){return i.id!==id;});
-    save();renderItems();
-  });
-}
+function delItem(id){items=items.filter(function(i){return i.id!==id;});save();renderItems();}
 function addItem(){
   var n=document.getElementById('new-name').value.trim();
   if(!n)return;
@@ -776,8 +724,8 @@ function recordBuy(){
   document.getElementById('buy-qty').value='1';document.getElementById('buy-price').value='';
   document.getElementById('buy-store').value='';document.getElementById('buy-note').value='';
   var btn=document.getElementById('buy-btn');
-  btn.innerHTML='&#10003; '+t('btn_recorded');
-  setTimeout(function(){btn.innerHTML='&#128722; '+t('btn_record');},1500);
+  btn.innerHTML='✓ '+t('btn_recorded');
+  setTimeout(function(){btn.innerHTML='🛒 '+t('btn_record');},1500);
 }
 function shareShoplist(){
   if(!shoplist.length){alert(t('no_shoplist'));return;}
@@ -806,11 +754,8 @@ function shareShoplist(){
 }
 
 function deleteLog(id){
-  var msg=curLang==='th'?'ลบประวัติการซื้อนี้?':'Delete this record?';
-  showConfirm(msg,function(){
-    logs=logs.filter(function(l){return l.id!==id;});
-    save();renderHistory();
-  });
+  logs=logs.filter(function(l){return l.id!==id;});
+  save();renderHistory();
 }
 function fmtDate(d){
   if(!d) return '-';
@@ -841,14 +786,14 @@ function renderHistory(){
   var never=items.filter(function(i){return !boughtIds.has(i.id);});
   var h='';
   if(notLast.length&&arr[0]){
-    h+='<div class="wb"><div class="wt">&#128336; '+t('bought_last')+' ('+fmtDate(arr[0].date)+')</div><div class="wc">';
+    h+='<div class="wb"><div class="wt">🕐 '+t('bought_last')+' ('+fmtDate(arr[0].date)+')</div><div class="wc">';
     notLast.forEach(function(i){h+='<span class="wch">'+emoji(i.cat)+' '+i.name+'</span>';});
     h+='</div></div>';
   }
   arr.forEach(function(s,idx){
     var sid='sess-'+idx,op=idx===0;
     h+='<div class="sb"><div class="sh" data-sid="'+sid+'" onclick="toggleSess(this)">';
-    h+='&#128197; ';
+    h+='📅 ';
     h+='<span class="sd">'+fmtDate(s.date)+'</span>';
     if(s.store) h+='<span class="stbg">\ud83d\udccd '+s.store+'</span>';
     h+='<div class="sm"><span>'+s.items.length+' '+t('items_count')+'</span>';
@@ -861,7 +806,7 @@ function renderHistory(){
       h+='<div><div class="ln">'+l.name+'</div>'+(l.note?'<div class="lsub">'+l.note+'</div>':'')+'</div>';
       h+='<span class="lq">+'+l.qty+' '+l.unit+'</span>';
       if(l.price) h+='<span class="lp">\u0e3f'+Math.round(l.price).toLocaleString()+'</span>';
-      h+='<button class="log-del" onclick="deleteLog('+l.id+')" aria-label="delete">&#128465;</button>';
+      h+='<button class="log-del" onclick="deleteLog('+l.id+')" aria-label="delete">🗑</button>';
       h+='</div>';
     });
     h+='</div></div>';
@@ -911,7 +856,7 @@ function renderSL(){
   h+='<div class="xsum"><span>'+tot+' '+t('items_count')+'</span><span>'+t('sl_count')+' '+dn+'/'+tot+'</span></div>';
   shoplist.filter(function(x){return !x.done;}).concat(shoplist.filter(function(x){return x.done;})).forEach(function(s){
     h+='<div class="xli'+(s.done?' done':'')+'">'+
-      '<button class="xck'+(s.done?' checked':'')+'" onclick="togSL('+s.id+')">'+(s.done?'&#10003;':'')+'</button>'+
+      '<button class="xck'+(s.done?' checked':'')+'" onclick="togSL('+s.id+')">'+(s.done?'✓':'')+'</button>'+
       '<span class="xln">'+emoji(s.cat)+' '+s.name+'</span>'+
       '<span class="xq">'+s.qty+' '+s.unit+'</span>'+
       '<button class="xdl" onclick="delSL('+s.id+')">&#10005;</button>'+
@@ -1057,15 +1002,6 @@ document.addEventListener('click',function(e){
       <div style="margin-top:12px">
         <button type="button" class="btn" style="width:100%" onclick="closeAddCat()"><span data-i="btn_cancel"></span></button>
       </div>
-    </div>
-  </div>
-</div>
-<div id="confirm-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:2000;align-items:center;justify-content:center;padding:20px">
-  <div style="background:linear-gradient(160deg,#f0faf7,#e8f4fd);border-radius:var(--rl);padding:22px 20px;width:100%;max-width:320px;border:.5px solid rgba(61,184,154,.25);box-shadow:0 8px 32px rgba(0,0,0,.15)">
-    <div id="confirm-msg" style="font-size:15px;color:var(--text);margin-bottom:20px;text-align:center;line-height:1.5;font-weight:500"></div>
-    <div style="display:flex;gap:10px">
-      <button type="button" id="confirm-cancel" class="btn" style="flex:1;justify-content:center"></button>
-      <button type="button" id="confirm-ok" style="flex:1;padding:10px;border-radius:var(--r);border:none;background:#e05a5a;color:#fff;font-size:15px;font-weight:600;cursor:pointer"></button>
     </div>
   </div>
 </div>
